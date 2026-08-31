@@ -1,0 +1,198 @@
+<resources>
+    <string name="app_name">Shaxsiy Moliya</string>
+
+    <!-- Greetings -->
+    <string name="greeting_morning">Xayrli tong ☀️</string>
+    <string name="greeting_afternoon">Xayrli kun ☀️</string>
+    <string name="greeting_evening">Xayrli kech 🌙</string>
+    <string name="greeting_night">Xayrli tun 🌙</string>
+    <string name="today">Bugun</string>
+    <string name="yesterday">Kecha</string>
+
+    <!-- Bottom Navigation -->
+    <string name="nav_home">Asosiy</string>
+    <string name="nav_transactions">Tranzaksiyalar</string>
+    <string name="nav_add">Qo\'shish</string>
+    <string name="nav_statistics">Statistika</string>
+    <string name="nav_menu">Menyu</string>
+
+    <!-- Home Screen -->
+    <string name="finance_overview">Moliya ko\'rinishi</string>
+    <string name="my_wallet">Mening hamyonim</string>
+    <string name="income">Daromad</string>
+    <string name="expense">Xarajat</string>
+    <string name="scheduled_payment">Rejali to\'lov</string>
+    <string name="available_balance">Mavjud Balans</string>
+    <string name="total_income">Daromad</string>
+    <string name="total_expense">Xarajat</string>
+    <string name="upcoming_payments">Kutilayotgan to\'lovlar</string>
+    <string name="recent_transactions">So\'nggi tranzaksiyalar</string>
+    <string name="view_all">Barchasi</string>
+    <string name="all_accounts">Barcha hisoblar</string>
+    <string name="aggregated_overview">Umumiy ko\'rinish</string>
+    <string name="add_account">Hisob qo\'shish</string>
+    <string name="manage_accounts">Hisoblarni boshqarish</string>
+    <string name="select_account">Hisobni tanlang</string>
+    <string name="in_days">%d kundan keyin</string>
+    <string name="due_today">Bugun to\'lanishi kerak</string>
+    <string name="no_recent_transactions">Tranzaksiyalar mavjud emas</string>
+    <string name="no_upcoming_payments">Kutilayotgan to\'lovlar yo\'q</string>
+
+    <!-- Transactions Screen -->
+    <string name="filter_all">Barchasi</string>
+    <string name="filter_income">Daromad</string>
+    <string name="filter_expense">Xarajat</string>
+    <string name="this_month">Shu oy</string>
+    <string name="this_week">Shu hafta</string>
+    <string name="this_year">Shu yil</string>
+    <string name="all_time">Barcha vaqt</string>
+    <string name="categories">Kategoriyalar</string>
+    <string name="search_transactions">Tranzaksiyalarni qidirish…</string>
+    <string name="entries_count">%d ta yozuv</string>
+    <string name="no_transactions_found">Tranzaksiyalar topilmadi</string>
+    <string name="add_first_transaction">Birinchi tranzaksiyangizni qo\'shish uchun + tugmasini bosing.</string>
+
+    <!-- Add / Edit Transaction -->
+    <string name="add_transaction">Tranzaksiya qo\'shish</string>
+    <string name="edit_transaction">Tranzaksiyani tahrirlash</string>
+    <string name="transaction_details">Tranzaksiya tafsilotlari</string>
+    <string name="type_expense">+ Xarajat</string>
+    <string name="type_income">+ Daromad</string>
+    <string name="type_transfer">+ O\'tkazma</string>
+    <string name="type_scheduled">⏰ Rejali</string>
+    <string name="transfer_coming_soon">O\'tkazma funksiyasi keyingi yangilanishda chiqadi</string>
+    <string name="amount">SUMMA</string>
+    <string name="select_category">Kategoriyani tanlang</string>
+    <string name="account">Hisob</string>
+    <string name="auto_selected">Avtomatik tanlangan</string>
+    <string name="date_and_time">Sana va vaqt</string>
+    <string name="note_optional">Izoh (ixtiyoriy)</string>
+    <string name="note_hint">Izoh yozing…</string>
+    <string name="attachment_optional">Fayl biriktirish (ixtiyoriy)</string>
+    <string name="add_attachment">Chek / Fayl biriktirish</string>
+    <string name="attachment_added">Fayl biriktirildi</string>
+    <string name="save_transaction">Tranzaksiyani saqlash ✓</string>
+    <string name="update_transaction">Tranzaksiyani yangilash ✓</string>
+    <string name="invalid_amount_error">Iltimos, noldan katta to\'g\'ri summa kiriting</string>
+    <string name="select_category_error">Iltimos, kategoriya tanlang</string>
+    <string name="select_account_error">Iltimos, hisob tanlang</string>
+
+    <!-- Categories -->
+    <string name="manage_categories">Kategoriyalar</string>
+    <string name="create_category">Kategoriya yaratish</string>
+    <string name="edit_category">Kategoriyani tahrirlash</string>
+    <string name="category_name">Kategoriya nomi</string>
+    <string name="category_type">Kategoriya turi</string>
+    <string name="category_icon">Belgi</string>
+    <string name="category_color">Rang</string>
+    <string name="delete_category">Kategoriyani o\'chirish</string>
+    <string name="delete_category_confirm">Ushbu kategoriyani o\'chirishni xohlaysizmi?</string>
+    <string name="default_categories_subtitle">%d ta standart kategoriya</string>
+
+    <!-- Scheduled Payments -->
+    <string name="scheduled_payments">Rejali to\'lovlar</string>
+    <string name="add_scheduled_payment">Rejali to\'lov qo\'shish</string>
+    <string name="edit_scheduled_payment">Rejali to\'lovni tahrirlash</string>
+    <string name="payment_name">To\'lov nomi (masalan, Internet, Sportzal)</string>
+    <string name="frequency">Davriylik</string>
+    <string name="frequency_daily">Har kuni</string>
+    <string name="frequency_weekly">Har hafta</string>
+    <string name="frequency_monthly">Har oy</string>
+    <string name="frequency_yearly">Har yil</string>
+    <string name="next_payment_date">Keyingi to\'lov sanasi</string>
+    <string name="status_active">Faol</string>
+    <string name="status_inactive">Nofaol</string>
+    <string name="scheduled_payments_subtitle">%1$d kutilmoqda · Keyingi: %2$s</string>
+    <string name="no_scheduled_subtitle">Rejali to\'lovlar yo\'q</string>
+    <string name="mark_as_paid">Hozir to\'lash</string>
+    <string name="delete_payment_confirm">Ushbu rejali to\'lovni o\'chirishni xohlaysizmi?</string>
+
+    <!-- Statistics -->
+    <string name="period_week">Hafta</string>
+    <string name="period_month">Oy</string>
+    <string name="period_year">Yil</string>
+    <string name="period_custom">Boshqa</string>
+    <string name="net_balance_change">Sof</string>
+    <string name="income_vs_expense">Daromad va Xarajat</string>
+    <string name="expenses_by_category">Kategoriyalar bo\'yicha xarajatlar</string>
+    <string name="income_by_category">Kategoriyalar bo\'yicha daromadlar</string>
+    <string name="details_action">Batafsil ›</string>
+    <string name="spent_suffix">%s sarflandi</string>
+    <string name="earned_suffix">%s tushdi</string>
+    <string name="no_statistics_data">Bu davrda ma\'lumotlar mavjud emas.</string>
+
+    <!-- Accounts -->
+    <string name="accounts">Hisoblar</string>
+    <string name="account_name">Hisob nomi</string>
+    <string name="currency">Valyuta</string>
+    <string name="initial_balance">Boshlang\'ich balans</string>
+    <string name="current_balance">Joriy balans</string>
+    <string name="cash_accounts_subtitle">%1$d ta hisob · %2$s</string>
+    <string name="delete_account_confirm">\"%s\" hisobini o\'chirishni tasdiqlaysizmi?</string>
+    <string name="cannot_delete_last_account">Kamida bitta hisob qolishi shart.</string>
+
+    <!-- Menu & Settings -->
+    <string name="my_finances">Mening Moliyam</string>
+    <string name="my_finances_subtitle">Mahalliy xotira · Hisob qaydnomasi shart emas</string>
+    <string name="appearance">Ko\'rinish</string>
+    <string name="theme_mode">Mavzu rejimi</string>
+    <string name="theme_system">Tizim</string>
+    <string name="theme_light">Yorug\'</string>
+    <string name="theme_dark">Qorong\'i</string>
+    <string name="language">Til</string>
+    <string name="interface_language">Interfeys tili</string>
+    <string name="select_language">Tilni tanlang</string>
+    <string name="notifications">Bildirishnomalar</string>
+    <string name="payment_reminders">To\'lov eslatmalari</string>
+    <string name="contact_support">Qo\'llab-quvvatlash</string>
+    <string name="terms_of_use">Foydalanish shartlari</string>
+    <string name="about_app">Dastur haqida</string>
+    <string name="about_app_description">Shaxsiy Moliya Menejeri V1.0.0\n\nBarcha ma\'lumotlar to\'liq qurilmangizda saqlanadi. Ma\'lumotlaringiz xavfsiz va shaxsiy bo\'lib qoladi.</string>
+    <string name="contact_support_text">Savol va takliflar uchun:\nsupport@financeapp.local</string>
+    <string name="terms_text">Barcha ma\'lumotlar faqat qurilmangizda saqlanadi va uchinchi shaxslarga uzatilmaydi.</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_welcome_title">Moliyaviy Menejerga Xush Kelibsiz</string>
+    <string name="onboarding_welcome_subtitle">Maxfiy · Qulay · Oflayn</string>
+    <string name="onboarding_create_account_title">Birinchi Hisobingizni Yarating</string>
+    <string name="onboarding_create_account_subtitle">Kassadagi pulingizni hisoblash uchun hisob oching</string>
+    <string name="onboarding_get_started">Boshlash 🚀</string>
+    <string name="onboarding_title">Shaxsiy Moliya</string>
+    <string name="onboarding_subtitle">Oson va qulay moliya boshqaruvi.</string>
+    <string name="onboarding_feature1">⚡ Tezkor xarajat va daromad qayd etish</string>
+    <string name="onboarding_feature2">🔒 100% Oflayn va Xavfsiz</string>
+    <string name="onboarding_feature3">📊 Aniq statistika va to\'lovlar</string>
+    <string name="onboarding_setup_title">Dastlabki hisobni sozlash</string>
+    <string name="onboarding_setup_desc">Birinchi hisobingizni kiriting</string>
+    <string name="onboarding_name_hint">Hisob nomi (masalan, Hamyon)</string>
+    <string name="onboarding_balance_hint">Boshlang\'ich summa (masalan, 500000)</string>
+    <string name="get_started">Boshlash →</string>
+
+    <!-- Common Dialog Actions -->
+    <string name="action_cancel">Bekor qilish</string>
+    <string name="action_save">Saqlash</string>
+    <string name="action_delete">O\'chirish</string>
+    <string name="action_edit">Tahrirlash</string>
+    <string name="action_close">Yopish</string>
+    <string name="action_confirm">Tasdiqlash</string>
+
+    <!-- Additional UI & Section Strings -->
+    <string name="section_financial_management">MOLIYAVIY BOSHQARUV</string>
+    <string name="section_app_settings">ILOVA SOZLAMALARI</string>
+    <string name="section_about_support">ILOVA HAQIDA VA YORDAM</string>
+    <string name="active_scheduled_count">%d ta faol</string>
+    <string name="terms_subtitle">Foydalanish shartlari va maxfiylik</string>
+    <string name="about_subtitle">Versiya 1.0.0 · Maxfiy va xavfsiz</string>
+    <string name="delete_transaction_confirm">Haqiqatan ham bu tranzaksiyani o\'chirmoqchimisiz?</string>
+    <string name="enter_account_name_error">Iltimos, hisob nomini kiriting</string>
+    <string name="enter_category_name_error">Iltimos, toifa nomini kiriting</string>
+    <string name="enter_valid_name_amount_error">Iltimos, to\'g\'ri nom va miqdorni kiriting</string>
+    <string name="create_cash_account">Yangi hisob ochish</string>
+    <string name="create_cash_account_desc">Naqd pul yoki kundalik hamyoningizni boshqaring</string>
+    <string name="recorded_as_transaction_toast">Tranzaksiya sifatida saqlandi!</string>
+    <string name="pay_now">To\'lash</string>
+    <string name="account_name_placeholder">Masalan: Hamyonim</string>
+    <string name="category_name_placeholder">Masalan: Qahva va yeguliklar</string>
+    <string name="payment_name_placeholder">Masalan: Sportzal a\'zoligi</string>
+    <string name="category_stats_transactions">%1$s%% · %2$d ta tranzaksiya</string>
+</resources>

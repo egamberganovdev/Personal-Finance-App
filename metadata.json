@@ -1,0 +1,6 @@
+{
+  "name": "Personal Finance",
+  "description": "Modern personal finance manager to track cash accounts, transactions, scheduled payments, and statistics.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

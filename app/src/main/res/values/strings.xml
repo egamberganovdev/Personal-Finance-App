@@ -1,0 +1,198 @@
+<resources>
+    <string name="app_name">Personal Finance</string>
+
+    <!-- Greetings -->
+    <string name="greeting_morning">Good Morning ☀️</string>
+    <string name="greeting_afternoon">Good Afternoon ☀️</string>
+    <string name="greeting_evening">Good Evening 🌙</string>
+    <string name="greeting_night">Good Night 🌙</string>
+    <string name="today">Today</string>
+    <string name="yesterday">Yesterday</string>
+
+    <!-- Bottom Navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_transactions">Transactions</string>
+    <string name="nav_add">Add</string>
+    <string name="nav_statistics">Statistics</string>
+    <string name="nav_menu">Menu</string>
+
+    <!-- Home Screen -->
+    <string name="finance_overview">Financial Overview</string>
+    <string name="my_wallet">My Wallet</string>
+    <string name="income">Income</string>
+    <string name="expense">Expense</string>
+    <string name="scheduled_payment">Scheduled Payment</string>
+    <string name="available_balance">Available Balance</string>
+    <string name="total_income">Income</string>
+    <string name="total_expense">Expense</string>
+    <string name="upcoming_payments">Upcoming Payments</string>
+    <string name="recent_transactions">Recent Transactions</string>
+    <string name="view_all">View All</string>
+    <string name="all_accounts">All Accounts</string>
+    <string name="aggregated_overview">Aggregated overview</string>
+    <string name="add_account">Add Account</string>
+    <string name="manage_accounts">Manage Accounts</string>
+    <string name="select_account">Select Account</string>
+    <string name="in_days">in %d days</string>
+    <string name="due_today">Due today</string>
+    <string name="no_recent_transactions">No recent transactions</string>
+    <string name="no_upcoming_payments">No upcoming scheduled payments</string>
+
+    <!-- Transactions Screen -->
+    <string name="filter_all">All</string>
+    <string name="filter_income">Income</string>
+    <string name="filter_expense">Expense</string>
+    <string name="this_month">This Month</string>
+    <string name="this_week">This Week</string>
+    <string name="this_year">This Year</string>
+    <string name="all_time">All Time</string>
+    <string name="categories">Categories</string>
+    <string name="search_transactions">Search transactions…</string>
+    <string name="entries_count">%d entries</string>
+    <string name="no_transactions_found">No transactions found</string>
+    <string name="add_first_transaction">Tap + below to record your first transaction.</string>
+
+    <!-- Add / Edit Transaction -->
+    <string name="add_transaction">Add Transaction</string>
+    <string name="edit_transaction">Edit Transaction</string>
+    <string name="transaction_details">Transaction Details</string>
+    <string name="type_expense">+ Expense</string>
+    <string name="type_income">+ Income</string>
+    <string name="type_transfer">+ Transfer</string>
+    <string name="type_scheduled">⏰ Scheduled</string>
+    <string name="transfer_coming_soon">Transfer is coming in future updates</string>
+    <string name="amount">AMOUNT</string>
+    <string name="select_category">Select Category</string>
+    <string name="account">Account</string>
+    <string name="auto_selected">Auto-selected</string>
+    <string name="date_and_time">Date &amp; Time</string>
+    <string name="note_optional">Note (Optional)</string>
+    <string name="note_hint">Add a note…</string>
+    <string name="attachment_optional">Attachment (Optional)</string>
+    <string name="add_attachment">Add Receipt / Attachment</string>
+    <string name="attachment_added">Attachment Added</string>
+    <string name="save_transaction">Save Transaction ✓</string>
+    <string name="update_transaction">Update Transaction ✓</string>
+    <string name="invalid_amount_error">Please enter a valid amount greater than zero</string>
+    <string name="select_category_error">Please choose a category</string>
+    <string name="select_account_error">Please select an account</string>
+
+    <!-- Categories -->
+    <string name="manage_categories">Categories</string>
+    <string name="create_category">Create Category</string>
+    <string name="edit_category">Edit Category</string>
+    <string name="category_name">Category Name</string>
+    <string name="category_type">Category Type</string>
+    <string name="category_icon">Icon</string>
+    <string name="category_color">Color</string>
+    <string name="delete_category">Delete Category</string>
+    <string name="delete_category_confirm">Are you sure you want to delete this category?</string>
+    <string name="default_categories_subtitle">%d default · create your own</string>
+
+    <!-- Scheduled Payments -->
+    <string name="scheduled_payments">Scheduled Payments</string>
+    <string name="add_scheduled_payment">Add Scheduled Payment</string>
+    <string name="edit_scheduled_payment">Edit Scheduled Payment</string>
+    <string name="payment_name">Payment Name (e.g. Internet, Gym)</string>
+    <string name="frequency">Frequency</string>
+    <string name="frequency_daily">Daily</string>
+    <string name="frequency_weekly">Weekly</string>
+    <string name="frequency_monthly">Monthly</string>
+    <string name="frequency_yearly">Yearly</string>
+    <string name="next_payment_date">Next Payment Date</string>
+    <string name="status_active">Active</string>
+    <string name="status_inactive">Inactive</string>
+    <string name="scheduled_payments_subtitle">%1$d upcoming · Next: %2$s</string>
+    <string name="no_scheduled_subtitle">0 scheduled</string>
+    <string name="mark_as_paid">Record as Transaction Now</string>
+    <string name="delete_payment_confirm">Are you sure you want to delete this scheduled payment?</string>
+
+    <!-- Statistics -->
+    <string name="period_week">Week</string>
+    <string name="period_month">Month</string>
+    <string name="period_year">Year</string>
+    <string name="period_custom">Custom</string>
+    <string name="net_balance_change">Net</string>
+    <string name="income_vs_expense">Income vs Expense</string>
+    <string name="expenses_by_category">Expenses by Category</string>
+    <string name="income_by_category">Income by Category</string>
+    <string name="details_action">Details ›</string>
+    <string name="spent_suffix">%s spent</string>
+    <string name="earned_suffix">%s earned</string>
+    <string name="no_statistics_data">No financial activity recorded in this period.</string>
+
+    <!-- Accounts -->
+    <string name="accounts">Accounts</string>
+    <string name="account_name">Account Name</string>
+    <string name="currency">Currency</string>
+    <string name="initial_balance">Initial Balance</string>
+    <string name="current_balance">Current Balance</string>
+    <string name="cash_accounts_subtitle">%1$d account · %2$s</string>
+    <string name="delete_account_confirm">Are you sure you want to delete \"%s\"? All transactions in this account will be removed.</string>
+    <string name="cannot_delete_last_account">You must keep at least one active Cash account.</string>
+
+    <!-- Menu & Settings -->
+    <string name="my_finances">My Finances</string>
+    <string name="my_finances_subtitle">Local-first · No account required</string>
+    <string name="appearance">Appearance</string>
+    <string name="theme_mode">Theme mode</string>
+    <string name="theme_system">System</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+    <string name="language">Language</string>
+    <string name="interface_language">Interface language</string>
+    <string name="select_language">Select Language</string>
+    <string name="notifications">Notifications</string>
+    <string name="payment_reminders">Payment reminders</string>
+    <string name="contact_support">Contact Support</string>
+    <string name="terms_of_use">Terms of Use</string>
+    <string name="about_app">About</string>
+    <string name="about_app_description">Personal Finance Manager V1.0.0\n\nBuilt with 100% local persistence on your device. Your financial accounts, balances, transactions, and scheduled payments remain completely private with no external servers or cloud accounts required.</string>
+    <string name="contact_support_text">For questions, feedback, or support regarding Personal Finance, contact us at:\nsupport@financeapp.local</string>
+    <string name="terms_text">Personal Finance Manager V1 Terms of Use:\n\n1. All financial calculations and records are stored strictly on your local device.\n2. You maintain full ownership and control over your financial data.\n3. The app is provided for personal budgeting and tracking purposes.</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_welcome_title">Welcome to Finance</string>
+    <string name="onboarding_welcome_subtitle">Local-first · Offline · Private</string>
+    <string name="onboarding_create_account_title">Set Up Your First Account</string>
+    <string name="onboarding_create_account_subtitle">Create a Cash account to begin tracking</string>
+    <string name="onboarding_get_started">Get Started 🚀</string>
+    <string name="onboarding_title">Personal Finance</string>
+    <string name="onboarding_subtitle">A calm, premium financial command center — balance at a glance, income &amp; expenses at a tap.</string>
+    <string name="onboarding_feature1">⚡ Fast expense &amp; income recording</string>
+    <string name="onboarding_feature2">🔒 100% Offline &amp; Private</string>
+    <string name="onboarding_feature3">📊 Clear statistics &amp; scheduled payments</string>
+    <string name="onboarding_setup_title">Initial Account Setup</string>
+    <string name="onboarding_setup_desc">Create your first Cash account to start managing your daily finances.</string>
+    <string name="onboarding_name_hint">Account Name (e.g. My Wallet)</string>
+    <string name="onboarding_balance_hint">Initial Balance (e.g. 500,000)</string>
+    <string name="get_started">Get Started →</string>
+
+    <!-- Common Dialog Actions -->
+    <string name="action_cancel">Cancel</string>
+    <string name="action_save">Save</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_edit">Edit</string>
+    <string name="action_close">Close</string>
+    <string name="action_confirm">Confirm</string>
+
+    <!-- Additional UI & Section Strings -->
+    <string name="section_financial_management">FINANCIAL MANAGEMENT</string>
+    <string name="section_app_settings">APP SETTINGS</string>
+    <string name="section_about_support">ABOUT &amp; SUPPORT</string>
+    <string name="active_scheduled_count">%d active</string>
+    <string name="terms_subtitle">Terms &amp; Privacy conditions</string>
+    <string name="about_subtitle">Version 1.0.0 · Local-first</string>
+    <string name="delete_transaction_confirm">Are you sure you want to delete this transaction?</string>
+    <string name="enter_account_name_error">Please enter an account name</string>
+    <string name="enter_category_name_error">Please enter a category name</string>
+    <string name="enter_valid_name_amount_error">Please enter a valid name and amount</string>
+    <string name="create_cash_account">Create Cash Account</string>
+    <string name="create_cash_account_desc">Manage your physical or daily cash wallet</string>
+    <string name="recorded_as_transaction_toast">Recorded as transaction!</string>
+    <string name="pay_now">Pay Now</string>
+    <string name="account_name_placeholder">e.g. My Wallet</string>
+    <string name="category_name_placeholder">e.g. Coffee &amp; Snacks</string>
+    <string name="payment_name_placeholder">e.g. Gym Membership</string>
+    <string name="category_stats_transactions">%1$s%% · %2$d transactions</string>
+</resources>

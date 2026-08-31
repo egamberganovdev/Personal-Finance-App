@@ -1,0 +1,198 @@
+<resources>
+    <string name="app_name">Личные Финансы</string>
+
+    <!-- Greetings -->
+    <string name="greeting_morning">Доброе утро ☀️</string>
+    <string name="greeting_afternoon">Добрый день ☀️</string>
+    <string name="greeting_evening">Добрый вечер 🌙</string>
+    <string name="greeting_night">Доброй ночи 🌙</string>
+    <string name="today">Сегодня</string>
+    <string name="yesterday">Вчера</string>
+
+    <!-- Bottom Navigation -->
+    <string name="nav_home">Главная</string>
+    <string name="nav_transactions">Транзакции</string>
+    <string name="nav_add">Добавить</string>
+    <string name="nav_statistics">Статистика</string>
+    <string name="nav_menu">Меню</string>
+
+    <!-- Home Screen -->
+    <string name="finance_overview">Финансовый обзор</string>
+    <string name="my_wallet">Мой кошелек</string>
+    <string name="income">Доход</string>
+    <string name="expense">Расход</string>
+    <string name="scheduled_payment">Запланированный платеж</string>
+    <string name="available_balance">Доступный баланс</string>
+    <string name="total_income">Доход</string>
+    <string name="total_expense">Расход</string>
+    <string name="upcoming_payments">Предстоящие платежи</string>
+    <string name="recent_transactions">Недавние транзакции</string>
+    <string name="view_all">Все</string>
+    <string name="all_accounts">Все счета</string>
+    <string name="aggregated_overview">Общий обзор</string>
+    <string name="add_account">Добавить счет</string>
+    <string name="manage_accounts">Управление счетами</string>
+    <string name="select_account">Выберите счет</string>
+    <string name="in_days">через %d дн.</string>
+    <string name="due_today">К оплате сегодня</string>
+    <string name="no_recent_transactions">Нет недавних транзакций</string>
+    <string name="no_upcoming_payments">Нет запланированных платежей</string>
+
+    <!-- Transactions Screen -->
+    <string name="filter_all">Все</string>
+    <string name="filter_income">Доходы</string>
+    <string name="filter_expense">Расходы</string>
+    <string name="this_month">Этот месяц</string>
+    <string name="this_week">Эта неделя</string>
+    <string name="this_year">Этот год</string>
+    <string name="all_time">Все время</string>
+    <string name="categories">Категории</string>
+    <string name="search_transactions">Поиск транзакций…</string>
+    <string name="entries_count">%d записей</string>
+    <string name="no_transactions_found">Транзакции не найдены</string>
+    <string name="add_first_transaction">Нажмите +, чтобы добавить первую запись.</string>
+
+    <!-- Add / Edit Transaction -->
+    <string name="add_transaction">Новая транзакция</string>
+    <string name="edit_transaction">Редактировать запись</string>
+    <string name="transaction_details">Детали транзакции</string>
+    <string name="type_expense">+ Расход</string>
+    <string name="type_income">+ Доход</string>
+    <string name="type_transfer">+ Перевод</string>
+    <string name="type_scheduled">⏰ Запланированный</string>
+    <string name="transfer_coming_soon">Переводы появятся в следующем обновлении</string>
+    <string name="amount">СУММА</string>
+    <string name="select_category">Выберите категорию</string>
+    <string name="account">Счет</string>
+    <string name="auto_selected">Авто-выбор</string>
+    <string name="date_and_time">Дата и время</string>
+    <string name="note_optional">Заметка (необязательно)</string>
+    <string name="note_hint">Добавить комментарий…</string>
+    <string name="attachment_optional">Чек / Файл (необязательно)</string>
+    <string name="add_attachment">Прикрепить чек</string>
+    <string name="attachment_added">Файл прикреплен</string>
+    <string name="save_transaction">Сохранить запись ✓</string>
+    <string name="update_transaction">Обновить запись ✓</string>
+    <string name="invalid_amount_error">Пожалуйста, введите сумму больше нуля</string>
+    <string name="select_category_error">Выберите категорию</string>
+    <string name="select_account_error">Выберите счет</string>
+
+    <!-- Categories -->
+    <string name="manage_categories">Категории</string>
+    <string name="create_category">Создать категорию</string>
+    <string name="edit_category">Редактировать категорию</string>
+    <string name="category_name">Название категории</string>
+    <string name="category_type">Тип категории</string>
+    <string name="category_icon">Иконка</string>
+    <string name="category_color">Цвет</string>
+    <string name="delete_category">Удалить категорию</string>
+    <string name="delete_category_confirm">Вы уверены, что хотите удалить эту категорию?</string>
+    <string name="default_categories_subtitle">%d стандартных категорий</string>
+
+    <!-- Scheduled Payments -->
+    <string name="scheduled_payments">Регулярные платежи</string>
+    <string name="add_scheduled_payment">Добавить платеж</string>
+    <string name="edit_scheduled_payment">Редактировать платеж</string>
+    <string name="payment_name">Название (например, Интернет, Фитнес)</string>
+    <string name="frequency">Периодичность</string>
+    <string name="frequency_daily">Ежедневно</string>
+    <string name="frequency_weekly">Еженедельно</string>
+    <string name="frequency_monthly">Ежемесячно</string>
+    <string name="frequency_yearly">Ежегодно</string>
+    <string name="next_payment_date">Дата следующего платежа</string>
+    <string name="status_active">Активен</string>
+    <string name="status_inactive">Отключен</string>
+    <string name="scheduled_payments_subtitle">%1$d предстоит · След: %2$s</string>
+    <string name="no_scheduled_subtitle">Нет платежей</string>
+    <string name="mark_as_paid">Оплатить сейчас</string>
+    <string name="delete_payment_confirm">Удалить этот регулярный платеж?</string>
+
+    <!-- Statistics -->
+    <string name="period_week">Неделя</string>
+    <string name="period_month">Месяц</string>
+    <string name="period_year">Год</string>
+    <string name="period_custom">Период</string>
+    <string name="net_balance_change">Итог</string>
+    <string name="income_vs_expense">Доходы и Расходы</string>
+    <string name="expenses_by_category">Расходы по категориям</string>
+    <string name="income_by_category">Доходы по категориям</string>
+    <string name="details_action">Подробнее ›</string>
+    <string name="spent_suffix">%s потрачено</string>
+    <string name="earned_suffix">%s получено</string>
+    <string name="no_statistics_data">Нет данных за выбранный период.</string>
+
+    <!-- Accounts -->
+    <string name="accounts">Счета</string>
+    <string name="account_name">Название счета</string>
+    <string name="currency">Валюта</string>
+    <string name="initial_balance">Начальный баланс</string>
+    <string name="current_balance">Текущий баланс</string>
+    <string name="cash_accounts_subtitle">%1$d счет · %2$s</string>
+    <string name="delete_account_confirm">Удалить счет \"%s\"?</string>
+    <string name="cannot_delete_last_account">Необходимо сохранить хотя бы один активный счет.</string>
+
+    <!-- Menu & Settings -->
+    <string name="my_finances">Мои Финансы</string>
+    <string name="my_finances_subtitle">Локальное хранение · Без регистрации</string>
+    <string name="appearance">Внешний вид</string>
+    <string name="theme_mode">Тема оформления</string>
+    <string name="theme_system">Системная</string>
+    <string name="theme_light">Светлая</string>
+    <string name="theme_dark">Темная</string>
+    <string name="language">Язык</string>
+    <string name="interface_language">Язык интерфейса</string>
+    <string name="select_language">Выберите язык</string>
+    <string name="notifications">Уведомления</string>
+    <string name="payment_reminders">Напоминания о платежах</string>
+    <string name="contact_support">Служба поддержки</string>
+    <string name="terms_of_use">Условия использования</string>
+    <string name="about_app">О приложении</string>
+    <string name="about_app_description">Личные Финансы V1.0.0\n\nВсе финансовые данные хранятся исключительно локально на вашем устройстве.</string>
+    <string name="contact_support_text">По всем вопросам пишите на:\nsupport@financeapp.local</string>
+    <string name="terms_text">Все данные хранятся локально на вашем телефоне.</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_welcome_title">Добро пожаловать в Личные Финансы</string>
+    <string name="onboarding_welcome_subtitle">Конфиденциально · Быстро · Офлайн</string>
+    <string name="onboarding_create_account_title">Настройка первого счета</string>
+    <string name="onboarding_create_account_subtitle">Создайте счет для наличных средств</string>
+    <string name="onboarding_get_started">Начать 🚀</string>
+    <string name="onboarding_title">Личные Финансы</string>
+    <string name="onboarding_subtitle">Удобный учет ваших доходов и расходов.</string>
+    <string name="onboarding_feature1">⚡ Быстрый ввод доходов и расходов</string>
+    <string name="onboarding_feature2">🔒 100% Офлайн и безопасно</string>
+    <string name="onboarding_feature3">📊 Наглядная статистика и график платежей</string>
+    <string name="onboarding_setup_title">Настройка кошелька</string>
+    <string name="onboarding_setup_desc">Укажите ваш первый счет</string>
+    <string name="onboarding_name_hint">Название счета (например, Кошелек)</string>
+    <string name="onboarding_balance_hint">Начальный баланс (например, 50000)</string>
+    <string name="get_started">Начать →</string>
+
+    <!-- Common Dialog Actions -->
+    <string name="action_cancel">Отмена</string>
+    <string name="action_save">Сохранить</string>
+    <string name="action_delete">Удалить</string>
+    <string name="action_edit">Редактировать</string>
+    <string name="action_close">Закрыть</string>
+    <string name="action_confirm">Подтвердить</string>
+
+    <!-- Additional UI & Section Strings -->
+    <string name="section_financial_management">УПРАВЛЕНИЕ ФИНАНСАМИ</string>
+    <string name="section_app_settings">НАСТРОЙКИ ПРИЛОЖЕНИЯ</string>
+    <string name="section_about_support">О ПРИЛОЖЕНИИ И ПОДДЕРЖКА</string>
+    <string name="active_scheduled_count">%d активных</string>
+    <string name="terms_subtitle">Условия и конфиденциальность</string>
+    <string name="about_subtitle">Версия 1.0.0 · Локальное хранение</string>
+    <string name="delete_transaction_confirm">Вы уверены, что хотите удалить эту транзакцию?</string>
+    <string name="enter_account_name_error">Пожалуйста, введите название счета</string>
+    <string name="enter_category_name_error">Пожалуйста, введите название категории</string>
+    <string name="enter_valid_name_amount_error">Пожалуйста, введите корректное название и сумму</string>
+    <string name="create_cash_account">Создать счет</string>
+    <string name="create_cash_account_desc">Учет наличных средств или кошелька</string>
+    <string name="recorded_as_transaction_toast">Записано как транзакция!</string>
+    <string name="pay_now">Оплатить</string>
+    <string name="account_name_placeholder">Например: Мой кошелек</string>
+    <string name="category_name_placeholder">Например: Кофе и перекусы</string>
+    <string name="payment_name_placeholder">Например: Абонемент в спортзал</string>
+    <string name="category_stats_transactions">%1$s%% · %2$d транзакций</string>
+</resources>
