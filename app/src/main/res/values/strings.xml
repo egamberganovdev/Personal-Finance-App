@@ -1,11 +1,10 @@
 <resources>
-    <string name="app_name">Personal Finance</string>
+    <string name="app_name">FinFlow</string>
 
     <!-- Greetings -->
-    <string name="greeting_morning">Good Morning ☀️</string>
-    <string name="greeting_afternoon">Good Afternoon ☀️</string>
-    <string name="greeting_evening">Good Evening 🌙</string>
-    <string name="greeting_night">Good Night 🌙</string>
+    <string name="greeting_morning">Good morning</string>
+    <string name="greeting_afternoon">Good afternoon</string>
+    <string name="greeting_night">Good night</string>
     <string name="today">Today</string>
     <string name="yesterday">Yesterday</string>
 
@@ -147,17 +146,17 @@
     <string name="contact_support">Contact Support</string>
     <string name="terms_of_use">Terms of Use</string>
     <string name="about_app">About</string>
-    <string name="about_app_description">Personal Finance Manager V1.0.0\n\nBuilt with 100% local persistence on your device. Your financial accounts, balances, transactions, and scheduled payments remain completely private with no external servers or cloud accounts required.</string>
-    <string name="contact_support_text">For questions, feedback, or support regarding Personal Finance, contact us at:\nsupport@financeapp.local</string>
-    <string name="terms_text">Personal Finance Manager V1 Terms of Use:\n\n1. All financial calculations and records are stored strictly on your local device.\n2. You maintain full ownership and control over your financial data.\n3. The app is provided for personal budgeting and tracking purposes.</string>
+    <string name="about_app_description">FinFlow V1.0.0\n\nBuilt with 100% local persistence on your device. Your financial accounts, balances, transactions, and scheduled payments remain completely private with no external servers or cloud accounts required.</string>
+    <string name="contact_support_text">For questions, feedback, or support regarding FinFlow, contact us at:\nsupport@finflow.app</string>
+    <string name="terms_text">FinFlow Terms of Use:\n\n1. All financial calculations and records are stored strictly on your local device.\n2. You maintain full ownership and control over your financial data.\n3. The app is provided for personal budgeting and tracking purposes.</string>
 
     <!-- Onboarding -->
-    <string name="onboarding_welcome_title">Welcome to Finance</string>
+    <string name="onboarding_welcome_title">Welcome to FinFlow</string>
     <string name="onboarding_welcome_subtitle">Local-first · Offline · Private</string>
     <string name="onboarding_create_account_title">Set Up Your First Account</string>
     <string name="onboarding_create_account_subtitle">Create a Cash account to begin tracking</string>
     <string name="onboarding_get_started">Get Started 🚀</string>
-    <string name="onboarding_title">Personal Finance</string>
+    <string name="onboarding_title">FinFlow</string>
     <string name="onboarding_subtitle">A calm, premium financial command center — balance at a glance, income &amp; expenses at a tap.</string>
     <string name="onboarding_feature1">⚡ Fast expense &amp; income recording</string>
     <string name="onboarding_feature2">🔒 100% Offline &amp; Private</string>
@@ -194,5 +193,9 @@
     <string name="account_name_placeholder">e.g. My Wallet</string>
     <string name="category_name_placeholder">e.g. Coffee &amp; Snacks</string>
     <string name="payment_name_placeholder">e.g. Gym Membership</string>
+    <string name="select_date">Select Date</string>
+    <string name="select_time">Select Time</string>
+    <string name="hour">Hour</string>
+    <string name="minute">Minute</string>
     <string name="category_stats_transactions">%1$s%% · %2$d transactions</string>
 </resources>

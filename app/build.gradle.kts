@@ -10,11 +10,11 @@ plugins {
 }
 
 android {
-  namespace = "com.example"
+  namespace = "dev.egamberganov.finflow"
   compileSdk { version = release(36) { minorApiLevel = 1 } }
 
   defaultConfig {
-    applicationId = "com.aistudio.personalfinance.kwzjrn"
+    applicationId = "dev.egamberganov.finflow"
     minSdk = 24
     targetSdk = 36
     versionCode = 1

@@ -1,6 +1,6 @@
 {
-  "name": "Personal Finance",
-  "description": "Modern personal finance manager to track cash accounts, transactions, scheduled payments, and statistics.",
+  "name": "FinFlow",
+  "description": "FinFlow - Modern personal finance and expense management application to track accounts, transactions, scheduled payments, and statistics.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

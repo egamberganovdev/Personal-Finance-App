@@ -1,11 +1,10 @@
 <resources>
-    <string name="app_name">Личные Финансы</string>
+    <string name="app_name">FinFlow</string>
 
     <!-- Greetings -->
-    <string name="greeting_morning">Доброе утро ☀️</string>
-    <string name="greeting_afternoon">Добрый день ☀️</string>
-    <string name="greeting_evening">Добрый вечер 🌙</string>
-    <string name="greeting_night">Доброй ночи 🌙</string>
+    <string name="greeting_morning">Доброе утро</string>
+    <string name="greeting_afternoon">Добрый день</string>
+    <string name="greeting_night">Доброй ночи</string>
     <string name="today">Сегодня</string>
     <string name="yesterday">Вчера</string>
 
@@ -147,17 +146,17 @@
     <string name="contact_support">Служба поддержки</string>
     <string name="terms_of_use">Условия использования</string>
     <string name="about_app">О приложении</string>
-    <string name="about_app_description">Личные Финансы V1.0.0\n\nВсе финансовые данные хранятся исключительно локально на вашем устройстве.</string>
-    <string name="contact_support_text">По всем вопросам пишите на:\nsupport@financeapp.local</string>
-    <string name="terms_text">Все данные хранятся локально на вашем телефоне.</string>
+    <string name="about_app_description">FinFlow V1.0.0\n\nВсе финансовые данные хранятся исключительно локально на вашем устройстве.</string>
+    <string name="contact_support_text">По всем вопросам пишите на:\nsupport@finflow.app</string>
+    <string name="terms_text">FinFlow Условия использования:\n\n1. Все данные хранятся локально на вашем телефоне без передачи на сторонние серверы.\n2. Вы полностью контролируете свои финансовые записи.</string>
 
     <!-- Onboarding -->
-    <string name="onboarding_welcome_title">Добро пожаловать в Личные Финансы</string>
+    <string name="onboarding_welcome_title">Добро пожаловать в FinFlow</string>
     <string name="onboarding_welcome_subtitle">Конфиденциально · Быстро · Офлайн</string>
     <string name="onboarding_create_account_title">Настройка первого счета</string>
     <string name="onboarding_create_account_subtitle">Создайте счет для наличных средств</string>
     <string name="onboarding_get_started">Начать 🚀</string>
-    <string name="onboarding_title">Личные Финансы</string>
+    <string name="onboarding_title">FinFlow</string>
     <string name="onboarding_subtitle">Удобный учет ваших доходов и расходов.</string>
     <string name="onboarding_feature1">⚡ Быстрый ввод доходов и расходов</string>
     <string name="onboarding_feature2">🔒 100% Офлайн и безопасно</string>
@@ -194,5 +193,9 @@
     <string name="account_name_placeholder">Например: Мой кошелек</string>
     <string name="category_name_placeholder">Например: Кофе и перекусы</string>
     <string name="payment_name_placeholder">Например: Абонемент в спортзал</string>
+    <string name="select_date">Выберите дату</string>
+    <string name="select_time">Выберите время</string>
+    <string name="hour">Час</string>
+    <string name="minute">Минута</string>
     <string name="category_stats_transactions">%1$s%% · %2$d транзакций</string>
 </resources>

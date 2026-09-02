@@ -1,11 +1,10 @@
 <resources>
-    <string name="app_name">Shaxsiy Moliya</string>
+    <string name="app_name">FinFlow</string>
 
     <!-- Greetings -->
-    <string name="greeting_morning">Xayrli tong ☀️</string>
-    <string name="greeting_afternoon">Xayrli kun ☀️</string>
-    <string name="greeting_evening">Xayrli kech 🌙</string>
-    <string name="greeting_night">Xayrli tun 🌙</string>
+    <string name="greeting_morning">Xayrli tong</string>
+    <string name="greeting_afternoon">Xayrli kun</string>
+    <string name="greeting_night">Xayrli tun</string>
     <string name="today">Bugun</string>
     <string name="yesterday">Kecha</string>
 
@@ -147,17 +146,17 @@
     <string name="contact_support">Qo\'llab-quvvatlash</string>
     <string name="terms_of_use">Foydalanish shartlari</string>
     <string name="about_app">Dastur haqida</string>
-    <string name="about_app_description">Shaxsiy Moliya Menejeri V1.0.0\n\nBarcha ma\'lumotlar to\'liq qurilmangizda saqlanadi. Ma\'lumotlaringiz xavfsiz va shaxsiy bo\'lib qoladi.</string>
-    <string name="contact_support_text">Savol va takliflar uchun:\nsupport@financeapp.local</string>
-    <string name="terms_text">Barcha ma\'lumotlar faqat qurilmangizda saqlanadi va uchinchi shaxslarga uzatilmaydi.</string>
+    <string name="about_app_description">FinFlow V1.0.0\n\nBarcha ma\'lumotlar to\'liq qurilmangizda saqlanadi. Ma\'lumotlaringiz xavfsiz va shaxsiy bo\'lib qoladi.</string>
+    <string name="contact_support_text">Savol va takliflar uchun:\nsupport@finflow.app</string>
+    <string name="terms_text">FinFlow Foydalanish shartlari:\n\n1. Barcha ma\'lumotlar faqat qurilmangizda saqlanadi va uchinchi shaxslarga uzatilmaydi.\n2. Moliyaviy ma\'lumotlaringiz to\'liq sizning nazoratingizda.</string>
 
     <!-- Onboarding -->
-    <string name="onboarding_welcome_title">Moliyaviy Menejerga Xush Kelibsiz</string>
+    <string name="onboarding_welcome_title">FinFlow ga Xush Kelibsiz</string>
     <string name="onboarding_welcome_subtitle">Maxfiy · Qulay · Oflayn</string>
     <string name="onboarding_create_account_title">Birinchi Hisobingizni Yarating</string>
     <string name="onboarding_create_account_subtitle">Kassadagi pulingizni hisoblash uchun hisob oching</string>
     <string name="onboarding_get_started">Boshlash 🚀</string>
-    <string name="onboarding_title">Shaxsiy Moliya</string>
+    <string name="onboarding_title">FinFlow</string>
     <string name="onboarding_subtitle">Oson va qulay moliya boshqaruvi.</string>
     <string name="onboarding_feature1">⚡ Tezkor xarajat va daromad qayd etish</string>
     <string name="onboarding_feature2">🔒 100% Oflayn va Xavfsiz</string>
@@ -194,5 +193,9 @@
     <string name="account_name_placeholder">Masalan: Hamyonim</string>
     <string name="category_name_placeholder">Masalan: Qahva va yeguliklar</string>
     <string name="payment_name_placeholder">Masalan: Sportzal a\'zoligi</string>
+    <string name="select_date">Sanani tanlang</string>
+    <string name="select_time">Vaqtni tanlang</string>
+    <string name="hour">Soat</string>
+    <string name="minute">Daqiqa</string>
     <string name="category_stats_transactions">%1$s%% · %2$d ta tranzaksiya</string>
 </resources>
