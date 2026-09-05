@@ -18,7 +18,7 @@ interface TransactionDao {
     fun getAllTransactionsWithDetails(): Flow<List<TransactionWithDetails>>
 
     @Transaction
-    @Query("SELECT * FROM transactions WHERE accountId = :accountId ORDER BY dateMillis DESC")
+    @Query("SELECT * FROM transactions WHERE accountId = :accountId OR toAccountId = :accountId ORDER BY dateMillis DESC")
     fun getTransactionsByAccountWithDetails(accountId: Long): Flow<List<TransactionWithDetails>>
 
     @Transaction
@@ -43,6 +43,9 @@ interface TransactionDao {
     @Query("SELECT * FROM transactions")
     suspend fun getAllTransactionsList(): List<TransactionEntity>
 
-    @Query("SELECT * FROM transactions WHERE accountId = :accountId")
+    @Query("SELECT COUNT(*) FROM transactions WHERE accountId = :accountId OR toAccountId = :accountId")
+    suspend fun getTransactionCountForAccount(accountId: Long): Int
+
+    @Query("SELECT * FROM transactions WHERE accountId = :accountId OR toAccountId = :accountId")
     suspend fun getTransactionsListByAccount(accountId: Long): List<TransactionEntity>
 }

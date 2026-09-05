@@ -11,6 +11,7 @@ import dev.egamberganov.finflow.data.entity.ScheduledPaymentWithDetails
 import dev.egamberganov.finflow.data.entity.TransactionEntity
 import dev.egamberganov.finflow.data.entity.TransactionWithDetails
 import dev.egamberganov.finflow.data.repository.FinanceRepository
+import dev.egamberganov.finflow.domain.model.AccountType
 import dev.egamberganov.finflow.domain.model.AccountWithBalance
 import dev.egamberganov.finflow.domain.model.CategorySpend
 import dev.egamberganov.finflow.domain.model.DateFilterRange
@@ -120,6 +121,7 @@ class FinanceViewModel(
                 TransactionFilterType.ALL -> true
                 TransactionFilterType.INCOME -> item.transaction.type == "INCOME"
                 TransactionFilterType.EXPENSE -> item.transaction.type == "EXPENSE"
+                TransactionFilterType.TRANSFER -> item.transaction.type == "TRANSFER"
             }
             val matchesDate = item.transaction.dateMillis >= startOfRangeMillis
             val matchesCategory = categoryId == null || item.transaction.categoryId == categoryId
@@ -128,7 +130,8 @@ class FinanceViewModel(
                 val catName = item.category?.name?.lowercase() ?: ""
                 val note = item.transaction.note?.lowercase() ?: ""
                 val accName = item.account?.name?.lowercase() ?: ""
-                catName.contains(q) || note.contains(q) || accName.contains(q) || item.transaction.amount.toString().contains(q)
+                val toAccName = item.toAccount?.name?.lowercase() ?: ""
+                catName.contains(q) || note.contains(q) || accName.contains(q) || toAccName.contains(q) || item.transaction.amount.toString().contains(q)
             }
             matchesType && matchesDate && matchesCategory && matchesSearch
         }
@@ -293,9 +296,14 @@ class FinanceViewModel(
     }
 
     // Onboarding
-    fun completeOnboarding(accountName: String, currency: String, initialBalance: Long) {
+    fun completeOnboarding(
+        accountName: String,
+        accountType: String = AccountType.CASH.dbKey,
+        currency: String,
+        initialBalance: Long
+    ) {
         viewModelScope.launch {
-            repository.completeOnboarding(accountName, currency, initialBalance)
+            repository.completeOnboarding(accountName, accountType, currency, initialBalance)
         }
     }
 
@@ -325,7 +333,7 @@ class FinanceViewModel(
         type: String,
         amount: Long,
         currency: String,
-        categoryId: Long,
+        categoryId: Long?,
         accountId: Long,
         dateMillis: Long,
         note: String?,
@@ -343,6 +351,56 @@ class FinanceViewModel(
                 attachmentUri = attachmentUri?.trim()?.ifEmpty { null }
             )
         }
+    }
+
+    fun addTransfer(
+        fromAccountId: Long,
+        toAccountId: Long,
+        amount: Long,
+        dateMillis: Long,
+        note: String?,
+        attachmentUri: String? = null,
+        exchangeRate: Double? = null,
+        convertedAmount: Long? = null
+    ) {
+        viewModelScope.launch {
+            repository.createTransfer(
+                fromAccountId = fromAccountId,
+                toAccountId = toAccountId,
+                amount = amount,
+                dateMillis = dateMillis,
+                note = note,
+                attachmentUri = attachmentUri,
+                exchangeRate = exchangeRate,
+                convertedAmount = convertedAmount
+            )
+        }
+    }
+
+    suspend fun createTransfer(
+        fromAccountId: Long,
+        toAccountId: Long,
+        amount: Long,
+        dateMillis: Long,
+        note: String?,
+        attachmentUri: String? = null,
+        exchangeRate: Double? = null,
+        convertedAmount: Long? = null
+    ): Result<Long> {
+        return repository.createTransfer(
+            fromAccountId = fromAccountId,
+            toAccountId = toAccountId,
+            amount = amount,
+            dateMillis = dateMillis,
+            note = note,
+            attachmentUri = attachmentUri,
+            exchangeRate = exchangeRate,
+            convertedAmount = convertedAmount
+        )
+    }
+
+    suspend fun fetchExchangeRate(fromCurrency: String, toCurrency: String): Result<Double> {
+        return repository.getExchangeRate(fromCurrency, toCurrency)
     }
 
     fun updateTransaction(transaction: TransactionEntity) {
@@ -364,9 +422,15 @@ class FinanceViewModel(
         }
     }
 
-    fun createAccount(name: String, currency: String, initialBalance: Long, colorHex: String) {
+    fun createAccount(
+        name: String,
+        type: String = AccountType.CASH.dbKey,
+        currency: String,
+        initialBalance: Long,
+        colorHex: String
+    ) {
         viewModelScope.launch {
-            repository.createAccount(name, currency, initialBalance, colorHex)
+            repository.createAccount(name, type, currency, initialBalance, colorHex)
         }
     }
 
@@ -376,9 +440,10 @@ class FinanceViewModel(
         }
     }
 
-    fun deleteAccount(account: AccountEntity) {
+    fun deleteAccount(account: AccountEntity, onResult: ((Boolean) -> Unit)? = null) {
         viewModelScope.launch {
-            repository.deleteAccount(account)
+            val success = repository.deleteAccount(account)
+            onResult?.invoke(success)
         }
     }
 

@@ -15,6 +15,12 @@ import androidx.room.PrimaryKey
             onDelete = ForeignKey.CASCADE
         ),
         ForeignKey(
+            entity = AccountEntity::class,
+            parentColumns = ["id"],
+            childColumns = ["toAccountId"],
+            onDelete = ForeignKey.CASCADE
+        ),
+        ForeignKey(
             entity = CategoryEntity::class,
             parentColumns = ["id"],
             childColumns = ["categoryId"],
@@ -23,6 +29,7 @@ import androidx.room.PrimaryKey
     ],
     indices = [
         Index("accountId"),
+        Index("toAccountId"),
         Index("categoryId"),
         Index("dateMillis")
     ]
@@ -30,11 +37,14 @@ import androidx.room.PrimaryKey
 data class TransactionEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
-    val type: String, // "INCOME" or "EXPENSE"
-    val amount: Long, // Positive amount in units
+    val type: String, // "INCOME", "EXPENSE", or "TRANSFER"
+    val amount: Long, // Positive amount in units (source amount)
     val currency: String,
-    val categoryId: Long,
-    val accountId: Long,
+    val categoryId: Long? = null,
+    val accountId: Long, // Source account
+    val toAccountId: Long? = null, // Destination account for TRANSFER
+    val exchangeRate: Double? = null, // For cross-currency transfer (1 source = X destination)
+    val convertedAmount: Long? = null, // Destination amount for cross-currency transfer
     val dateMillis: Long,
     val note: String? = null,
     val attachmentUri: String? = null,

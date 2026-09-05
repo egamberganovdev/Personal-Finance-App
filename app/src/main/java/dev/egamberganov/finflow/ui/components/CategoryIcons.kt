@@ -1,6 +1,7 @@
 package dev.egamberganov.finflow.ui.components
 
 import androidx.annotation.DrawableRes
+import dev.egamberganov.finflow.domain.model.AccountType
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
@@ -118,19 +119,7 @@ object CategoryVisuals {
      */
     @DrawableRes
     fun getAccountDrawable(accountType: String): Int {
-        return when (accountType.lowercase().trim()) {
-            "cash", "wallet" -> R.drawable.ic_fin_wallet
-            "bank" -> R.drawable.ic_fin_bank
-            "savings" -> R.drawable.ic_fin_savings
-            "investment" -> R.drawable.ic_fin_investment
-            "loan", "debt" -> R.drawable.ic_fin_loan
-            "e-wallet", "ewallet", "mobile" -> R.drawable.ic_fin_ewallet
-            "money" -> R.drawable.ic_fin_money
-            "coins" -> R.drawable.ic_fin_coins
-            "banknote" -> R.drawable.ic_fin_banknote
-            "balance" -> R.drawable.ic_fin_balance
-            else -> R.drawable.ic_fin_wallet
-        }
+        return AccountType.fromString(accountType).iconResId
     }
 
     // Standard fallback ImageVectors if needed
@@ -157,14 +146,13 @@ object CategoryVisuals {
 
     // Account Type Icons
     fun getAccountIcon(accountType: String): ImageVector {
-        return when (accountType.lowercase()) {
-            "cash", "wallet" -> Icons.Outlined.AccountBalanceWallet
-            "bank" -> Icons.Outlined.AccountBalance
-            "savings" -> Icons.Outlined.Savings
-            "investment" -> Icons.Outlined.TrendingUp
-            "loan", "debt" -> Icons.Outlined.CreditCard
-            "e-wallet", "ewallet", "mobile" -> Icons.Outlined.Smartphone
-            else -> Icons.Outlined.AccountBalanceWallet
+        return when (AccountType.fromString(accountType)) {
+            AccountType.CASH -> Icons.Outlined.AccountBalanceWallet
+            AccountType.BANK -> Icons.Outlined.AccountBalance
+            AccountType.SAVINGS -> Icons.Outlined.Savings
+            AccountType.INVESTMENT -> Icons.Outlined.TrendingUp
+            AccountType.LOAN_DEBT -> Icons.Outlined.CreditCard
+            AccountType.EWALLET -> Icons.Outlined.Smartphone
         }
     }
 
@@ -232,14 +220,7 @@ object CategoryVisuals {
         "#94A3B8"  // Other Slate
     )
 
-    val accountTypes = listOf(
-        "Cash" to "Cash / Wallet",
-        "Bank" to "Bank Account",
-        "Savings" to "Savings",
-        "Investment" to "Investment",
-        "Loan" to "Loan / Debt",
-        "E-Wallet" to "E-Wallet"
-    )
+    val accountTypes = AccountType.entries.map { it.dbKey to it.name }
 }
 
 /**

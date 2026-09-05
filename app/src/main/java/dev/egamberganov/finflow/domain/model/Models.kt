@@ -1,5 +1,6 @@
 package dev.egamberganov.finflow.domain.model
 
+import dev.egamberganov.finflow.R
 import dev.egamberganov.finflow.data.entity.AccountEntity
 import dev.egamberganov.finflow.data.entity.CategoryEntity
 import dev.egamberganov.finflow.data.entity.ScheduledPaymentEntity
@@ -8,6 +9,37 @@ import dev.egamberganov.finflow.data.entity.TransactionWithDetails
 import dev.egamberganov.finflow.data.entity.ScheduledPaymentWithDetails
 import java.text.NumberFormat
 import java.util.Locale
+
+enum class AccountType(
+    val dbKey: String,
+    val stringResId: Int,
+    val iconResId: Int
+) {
+    CASH("CASH", R.string.account_type_cash, R.drawable.ic_fin_wallet),
+    BANK("BANK", R.string.account_type_bank, R.drawable.ic_fin_bank),
+    SAVINGS("SAVINGS", R.string.account_type_savings, R.drawable.ic_fin_savings),
+    EWALLET("EWALLET", R.string.account_type_ewallet, R.drawable.ic_fin_ewallet),
+    INVESTMENT("INVESTMENT", R.string.account_type_investment, R.drawable.ic_fin_investment),
+    LOAN_DEBT("LOAN_DEBT", R.string.account_type_loan_debt, R.drawable.ic_fin_loan);
+
+    companion object {
+        fun fromString(value: String?): AccountType {
+            if (value.isNullOrBlank()) return CASH
+            val normalized = value.trim().uppercase()
+            return when (normalized) {
+                "CASH", "WALLET" -> CASH
+                "BANK", "BANK_ACCOUNT", "BANK ACCOUNT" -> BANK
+                "SAVINGS", "SAVING" -> SAVINGS
+                "EWALLET", "E-WALLET", "E_WALLET", "MOBILE" -> EWALLET
+                "INVESTMENT", "INVEST" -> INVESTMENT
+                "LOAN_DEBT", "LOAN", "DEBT", "LOAN / DEBT" -> LOAN_DEBT
+                // Backward-compatible safe mapping for legacy "OTHER"
+                "OTHER" -> CASH
+                else -> CASH
+            }
+        }
+    }
+}
 
 data class AccountWithBalance(
     val account: AccountEntity,
@@ -22,6 +54,7 @@ data class AccountWithBalance(
     val type: String get() = account.type
     val initialBalance: Long get() = account.initialBalance
     val colorHex: String get() = account.colorHex
+    val accountType: AccountType get() = AccountType.fromString(account.type)
 }
 
 data class FinancialSummary(
@@ -55,7 +88,8 @@ enum class TimePeriod(val label: String) {
 enum class TransactionFilterType(val label: String) {
     ALL("All"),
     INCOME("Income"),
-    EXPENSE("Expense")
+    EXPENSE("Expense"),
+    TRANSFER("Transfer")
 }
 
 enum class DateFilterRange(val label: String) {

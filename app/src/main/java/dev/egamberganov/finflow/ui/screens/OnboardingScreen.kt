@@ -1,6 +1,7 @@
 package dev.egamberganov.finflow.ui.screens
 
 import android.widget.Toast
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -44,23 +45,27 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.egamberganov.finflow.R
+import dev.egamberganov.finflow.domain.model.AccountType
 import dev.egamberganov.finflow.ui.theme.BrandPrimary
 import dev.egamberganov.finflow.ui.theme.BrandPrimaryLight
 import dev.egamberganov.finflow.ui.theme.BrandPrimaryVariant
+import dev.egamberganov.finflow.ui.theme.appColors
 
 @Composable
 fun OnboardingScreen(
-    onComplete: (accountName: String, currency: String, initialBalance: Long) -> Unit,
+    onComplete: (accountName: String, accountType: String, currency: String, initialBalance: Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
     var accountName by remember { mutableStateOf("My Wallet") }
+    var selectedAccountType by remember { mutableStateOf(AccountType.CASH) }
     var selectedCurrency by remember { mutableStateOf("UZS") }
     var initialBalanceText by remember { mutableStateOf("0") }
 
@@ -184,6 +189,67 @@ fun OnboardingScreen(
 
                 Spacer(modifier = Modifier.height(12.dp))
 
+                // Account Type Selector
+                Text(
+                    text = stringResource(R.string.account_type),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Spacer(modifier = Modifier.height(6.dp))
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    AccountType.entries.chunked(3).forEach { rowTypes ->
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            rowTypes.forEach { accType ->
+                                val isSelected = selectedAccountType == accType
+                                Surface(
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .clip(RoundedCornerShape(10.dp))
+                                        .clickable { selectedAccountType = accType }
+                                        .testTag("onboarding_account_type_${accType.dbKey}"),
+                                    shape = RoundedCornerShape(10.dp),
+                                    color = if (isSelected) BrandPrimary.copy(alpha = 0.12f) else MaterialTheme.colorScheme.surface,
+                                    border = BorderStroke(
+                                        1.5.dp,
+                                        if (isSelected) BrandPrimary else MaterialTheme.colorScheme.outline.copy(alpha = 0.15f)
+                                    )
+                                ) {
+                                    Column(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(vertical = 8.dp, horizontal = 4.dp),
+                                        horizontalAlignment = Alignment.CenterHorizontally,
+                                        verticalArrangement = Arrangement.Center
+                                    ) {
+                                        Icon(
+                                            painter = painterResource(id = accType.iconResId),
+                                            contentDescription = null,
+                                            tint = if (isSelected) BrandPrimary else MaterialTheme.colorScheme.onSurfaceVariant,
+                                            modifier = Modifier.size(20.dp)
+                                        )
+                                        Spacer(modifier = Modifier.height(4.dp))
+                                        Text(
+                                            text = stringResource(accType.stringResId),
+                                            style = MaterialTheme.typography.labelSmall,
+                                            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
+                                            color = if (isSelected) BrandPrimary else MaterialTheme.colorScheme.onSurface,
+                                            maxLines = 1
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(12.dp))
+
                 // Currency Selector
                 Text(
                     text = stringResource(R.string.currency),
@@ -247,10 +313,10 @@ fun OnboardingScreen(
             onClick = {
                 val initBal = initialBalanceText.toLongOrNull() ?: 0L
                 if (accountName.isBlank()) {
-                    Toast.makeText(context, "Please enter an account name", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, context.getString(R.string.enter_account_name_error), Toast.LENGTH_SHORT).show()
                     return@Button
                 }
-                onComplete(accountName, selectedCurrency, initBal)
+                onComplete(accountName.trim(), selectedAccountType.dbKey, selectedCurrency, initBal)
             },
             modifier = Modifier
                 .fillMaxWidth()

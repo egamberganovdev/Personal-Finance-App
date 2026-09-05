@@ -165,8 +165,8 @@ fun FinanceAppRoot(viewModel: FinanceViewModel) {
 
     if (!isOnboardingCompleted) {
         OnboardingScreen(
-            onComplete = { accountName, currency, initialBalance ->
-                viewModel.completeOnboarding(accountName, currency, initialBalance)
+            onComplete = { accountName, accountType, currency, initialBalance ->
+                viewModel.completeOnboarding(accountName, accountType, currency, initialBalance)
             }
         )
     } else {
@@ -289,6 +289,41 @@ fun FinanceAppRoot(viewModel: FinanceViewModel) {
                     showAddTransactionSheet = false
                     editingTransaction = null
                 },
+                onSaveTransfer = { fromId, toId, amount, dateMillis, note, attachment, rate, convertedAmount ->
+                    if (editingTransaction != null) {
+                        viewModel.updateTransaction(
+                            editingTransaction!!.transaction.copy(
+                                type = "TRANSFER",
+                                amount = amount,
+                                currency = allAccounts.find { it.id == fromId }?.currency ?: "UZS",
+                                categoryId = null,
+                                accountId = fromId,
+                                toAccountId = toId,
+                                exchangeRate = rate,
+                                convertedAmount = convertedAmount,
+                                dateMillis = dateMillis,
+                                note = note,
+                                attachmentUri = attachment
+                            )
+                        )
+                    } else {
+                        viewModel.addTransfer(
+                            fromAccountId = fromId,
+                            toAccountId = toId,
+                            amount = amount,
+                            dateMillis = dateMillis,
+                            note = note,
+                            attachmentUri = attachment,
+                            exchangeRate = rate,
+                            convertedAmount = convertedAmount
+                        )
+                    }
+                    showAddTransactionSheet = false
+                    editingTransaction = null
+                },
+                onFetchExchangeRate = { from, to ->
+                    viewModel.fetchExchangeRate(from, to)
+                },
                 onOpenScheduledPayment = {
                     showAddTransactionSheet = false
                     showCreateScheduledPaymentDialog = true
@@ -353,18 +388,19 @@ fun FinanceAppRoot(viewModel: FinanceViewModel) {
         if (showCreateAccountDialog) {
             CreateAccountDialog(
                 editingAccount = editingAccount,
-                onSave = { name, currency, initialBalance, colorHex ->
+                onSave = { name, type, currency, initialBalance, colorHex ->
                     if (editingAccount != null) {
                         viewModel.updateAccount(
                             editingAccount!!.copy(
                                 name = name,
+                                type = type,
                                 currency = currency,
                                 initialBalance = initialBalance,
                                 colorHex = colorHex
                             )
                         )
                     } else {
-                        viewModel.createAccount(name, currency, initialBalance, colorHex)
+                        viewModel.createAccount(name, type, currency, initialBalance, colorHex)
                     }
                     showCreateAccountDialog = false
                     editingAccount = null

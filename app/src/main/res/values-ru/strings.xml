@@ -57,9 +57,32 @@
     <string name="transaction_details">Детали транзакции</string>
     <string name="type_expense">+ Расход</string>
     <string name="type_income">+ Доход</string>
-    <string name="type_transfer">+ Перевод</string>
+    <string name="type_transfer">Перевод</string>
     <string name="type_scheduled">⏰ Запланированный</string>
-    <string name="transfer_coming_soon">Переводы появятся в следующем обновлении</string>
+    <string name="transfer_coming_soon">Перевод</string>
+    <string name="transfer_from_account">Со счета</string>
+    <string name="transfer_to_account">На счет</string>
+    <string name="transfer_same_account_error">Счет списания и счет зачисления должны различаться</string>
+    <string name="transfer_insufficient_balance_error">Недостаточно средств. Доступно: %s</string>
+    <string name="transfer_action_confirm">Перевести средства ✓</string>
+    <string name="transfer_currency_conversion">Конвертация валюты</string>
+    <string name="currency_conversion">Конвертация валюты</string>
+    <string name="transfer_exchange_rate">Курс обмена</string>
+    <string name="transfer_exchange_rate_format">1 %1$s = %2$s %3$s</string>
+    <string name="transfer_destination_receives">Получатель получит</string>
+    <string name="destination_receives">Получатель получит</string>
+    <string name="transfer_fetching_rate">Получение актуального курса…</string>
+    <string name="transfer_rate_fetch_failed">Не удалось получить курс валют. Проверьте интернет-соединение.</string>
+    <string name="exchange_rate_error">Не удалось получить курс валют. Проверьте интернет-соединение.</string>
+    <string name="transfer_retry">Повторить</string>
+    <string name="transfer_need_at_least_two_accounts">Для перевода необходимо как минимум 2 счета.</string>
+    <string name="transfer_available_balance">Доступно: %s</string>
+    <string name="source_balance">Доступно: %s</string>
+    <string name="transfer_insufficient_funds">Недостаточно средств на счете списания</string>
+    <string name="save_transfer">Сохранить перевод ✓</string>
+    <string name="edit_transfer">Обновить перевод ✓</string>
+    <string name="filter_transfer">Перевод</string>
+    <string name="delete_transfer_confirm">Вы действительно хотите удалить этот перевод? Переведенные суммы будут возвращены на оба счета.</string>
     <string name="amount">СУММА</string>
     <string name="select_category">Выберите категорию</string>
     <string name="account">Счет</string>
@@ -123,12 +146,24 @@
     <!-- Accounts -->
     <string name="accounts">Счета</string>
     <string name="account_name">Название счета</string>
+    <string name="edit_account">Редактировать счет</string>
+    <string name="account_type">Тип счета</string>
+    <string name="account_type_cash">Наличные</string>
+    <string name="account_type_bank">Банковский счет</string>
+    <string name="account_type_savings">Сбережения</string>
+    <string name="account_type_ewallet">Электронный кошелек</string>
+    <string name="account_type_investment">Инвестиции</string>
+    <string name="account_type_loan_debt">Кредит / Долг</string>
+    <string name="account_currency_locked_notice">Валюту счета нельзя изменить после создания для защиты истории транзакций.</string>
     <string name="currency">Валюта</string>
     <string name="initial_balance">Начальный баланс</string>
     <string name="current_balance">Текущий баланс</string>
     <string name="cash_accounts_subtitle">%1$d счет · %2$s</string>
     <string name="delete_account_confirm">Удалить счет \"%s\"?</string>
     <string name="cannot_delete_last_account">Необходимо сохранить хотя бы один активный счет.</string>
+    <string name="cannot_delete_account_title">Невозможно удалить счет</string>
+    <string name="cannot_delete_account_has_transactions">Этот счет содержит историю транзакций и не может быть удален. Вы можете сохранить его для целостности финансовых записей.</string>
+    <string name="action_ok">Понятно</string>
 
     <!-- Menu & Settings -->
     <string name="my_finances">Мои Финансы</string>

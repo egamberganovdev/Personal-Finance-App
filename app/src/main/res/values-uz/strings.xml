@@ -57,9 +57,32 @@
     <string name="transaction_details">Tranzaksiya tafsilotlari</string>
     <string name="type_expense">+ Xarajat</string>
     <string name="type_income">+ Daromad</string>
-    <string name="type_transfer">+ O\'tkazma</string>
+    <string name="type_transfer">O\'tkazma</string>
     <string name="type_scheduled">⏰ Rejali</string>
-    <string name="transfer_coming_soon">O\'tkazma funksiyasi keyingi yangilanishda chiqadi</string>
+    <string name="transfer_coming_soon">O\'tkazma</string>
+    <string name="transfer_from_account">Qaysi hisobdan</string>
+    <string name="transfer_to_account">Qaysi hisobga</string>
+    <string name="transfer_same_account_error">Yuboruvchi va qabul qiluvchi hisoblar har xil bo\'lishi kerak</string>
+    <string name="transfer_insufficient_balance_error">Hisobda mablag\' yetarli emas. Mavjud: %s</string>
+    <string name="transfer_action_confirm">Pulni o\'tkazish ✓</string>
+    <string name="transfer_currency_conversion">Valyuta ayirboshlash</string>
+    <string name="currency_conversion">Valyuta ayirboshlash</string>
+    <string name="transfer_exchange_rate">Valyuta kursi</string>
+    <string name="transfer_exchange_rate_format">1 %1$s = %2$s %3$s</string>
+    <string name="transfer_destination_receives">Qabul qiluvchi oladi</string>
+    <string name="destination_receives">Qabul qiluvchi hisobga tushadi</string>
+    <string name="transfer_fetching_rate">Jonli valyuta kursi olinmoqda…</string>
+    <string name="transfer_rate_fetch_failed">Valyuta kursini olib bo\'lmadi. Internet aloqasini tekshiring.</string>
+    <string name="exchange_rate_error">Valyuta kursini olib bo\'lmadi. Internet aloqasini tekshiring.</string>
+    <string name="transfer_retry">Qayta urinish</string>
+    <string name="transfer_need_at_least_two_accounts">O\'tkazma qilish uchun kamida 2 ta hisob bo\'lishi kerak.</string>
+    <string name="transfer_available_balance">Mavjud: %s</string>
+    <string name="source_balance">Mavjud: %s</string>
+    <string name="transfer_insufficient_funds">Yuboruvchi hisobda mablag\' yetarli emas</string>
+    <string name="save_transfer">O\'tkazmani saqlash ✓</string>
+    <string name="edit_transfer">O\'tkazmani yangilash ✓</string>
+    <string name="filter_transfer">O\'tkazma</string>
+    <string name="delete_transfer_confirm">Haqiqatan ham ushbu o\'tkazmani o\'chirmoqchimisiz? O\'tkazilgan summalar ikkala hisobda ham qaytariladi.</string>
     <string name="amount">SUMMA</string>
     <string name="select_category">Kategoriyani tanlang</string>
     <string name="account">Hisob</string>
@@ -123,12 +146,24 @@
     <!-- Accounts -->
     <string name="accounts">Hisoblar</string>
     <string name="account_name">Hisob nomi</string>
+    <string name="edit_account">Hisobni tahrirlash</string>
+    <string name="account_type">Hisob turi</string>
+    <string name="account_type_cash">Naqd pul</string>
+    <string name="account_type_bank">Bank hisobi</string>
+    <string name="account_type_savings">Jamg‘arma</string>
+    <string name="account_type_ewallet">Elektron hamyon</string>
+    <string name="account_type_investment">Investitsiya</string>
+    <string name="account_type_loan_debt">Qarz / Majburiyat</string>
+    <string name="account_currency_locked_notice">Tranzaksiyalar tarixini saqlash uchun valyutani o‘zgartirib bo‘lmaydi.</string>
     <string name="currency">Valyuta</string>
     <string name="initial_balance">Boshlang\'ich balans</string>
     <string name="current_balance">Joriy balans</string>
     <string name="cash_accounts_subtitle">%1$d ta hisob · %2$s</string>
     <string name="delete_account_confirm">\"%s\" hisobini o\'chirishni tasdiqlaysizmi?</string>
-    <string name="cannot_delete_last_account">Kamida bitta hisob qolishi shart.</string>
+    <string name="cannot_delete_last_account">Kamida bitta faol hisob qolishi shart.</string>
+    <string name="cannot_delete_account_title">Hisobni o‘chirib bo‘lmaydi</string>
+    <string name="cannot_delete_account_has_transactions">Ushbu hisobda tranzaksiyalar tarixi mavjud va uni o‘chirib bo‘lmaydi. Moliyaviy yozuvlaringizni saqlash uchun uni qoldirishingiz mumkin.</string>
+    <string name="action_ok">Tushundim</string>
 
     <!-- Menu & Settings -->
     <string name="my_finances">Mening Moliyam</string>

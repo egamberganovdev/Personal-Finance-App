@@ -14,7 +14,12 @@ data class TransactionWithDetails(
         parentColumn = "accountId",
         entityColumn = "id"
     )
-    val account: AccountEntity?
+    val account: AccountEntity?,
+    @Relation(
+        parentColumn = "toAccountId",
+        entityColumn = "id"
+    )
+    val toAccount: AccountEntity? = null
 )
 
 data class ScheduledPaymentWithDetails(

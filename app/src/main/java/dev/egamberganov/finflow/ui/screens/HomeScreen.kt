@@ -325,13 +325,26 @@ private fun BalanceOverviewCard(
                         shape = RoundedCornerShape(20.dp),
                         color = Color.White.copy(alpha = 0.18f)
                     ) {
-                        Text(
-                            text = selectedAccount?.account?.name ?: stringResource(R.string.my_wallet),
-                            style = MaterialTheme.typography.labelSmall,
-                            fontWeight = FontWeight.SemiBold,
-                            color = Color.White,
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
                             modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
-                        )
+                        ) {
+                            if (selectedAccount != null) {
+                                Icon(
+                                    painter = painterResource(id = selectedAccount.accountType.iconResId),
+                                    contentDescription = null,
+                                    tint = Color.White,
+                                    modifier = Modifier.size(13.dp)
+                                )
+                                Spacer(modifier = Modifier.width(5.dp))
+                            }
+                            Text(
+                                text = selectedAccount?.account?.name ?: stringResource(R.string.all_accounts),
+                                style = MaterialTheme.typography.labelSmall,
+                                fontWeight = FontWeight.SemiBold,
+                                color = Color.White
+                            )
+                        }
                     }
                 }
 
@@ -520,10 +533,15 @@ fun TransactionListItem(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val isTransfer = item.transaction.type == "TRANSFER"
     val isExpense = item.transaction.type == "EXPENSE"
     val timeFormatter = remember { SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()) }
     val categoryName = item.category?.name ?: ""
-    val amountColor = if (isExpense) MaterialTheme.appColors.expense else MaterialTheme.appColors.income
+    val amountColor = when {
+        isTransfer -> MaterialTheme.appColors.brand
+        isExpense -> MaterialTheme.appColors.expense
+        else -> MaterialTheme.appColors.income
+    }
 
     Surface(
         modifier = modifier
@@ -542,22 +560,44 @@ fun TransactionListItem(
             verticalAlignment = Alignment.CenterVertically
         ) {
             // 44px Icon Tile with 15% opacity background
-            CategoryIconBadge(
-                iconName = item.category?.iconName ?: "other",
-                colorHex = item.category?.colorHex ?: if (isExpense) "#F4543D" else "#22C55E",
-                categoryName = categoryName,
-                size = 44.dp,
-                iconSize = 22.dp
-            )
+            if (isTransfer) {
+                Surface(
+                    modifier = Modifier.size(44.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    color = MaterialTheme.appColors.brand.copy(alpha = 0.15f)
+                ) {
+                    Box(contentAlignment = Alignment.Center) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_tx_transfer),
+                            contentDescription = "Transfer",
+                            tint = MaterialTheme.appColors.brand,
+                            modifier = Modifier.size(22.dp)
+                        )
+                    }
+                }
+            } else {
+                CategoryIconBadge(
+                    iconName = item.category?.iconName ?: "other",
+                    colorHex = item.category?.colorHex ?: if (isExpense) "#F4543D" else "#22C55E",
+                    categoryName = categoryName,
+                    size = 44.dp,
+                    iconSize = 22.dp
+                )
+            }
 
             Spacer(modifier = Modifier.width(14.dp))
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = item.category?.name ?: "Transaction",
+                    text = if (isTransfer) {
+                        "${item.account?.name ?: "Account"} → ${item.toAccount?.name ?: "Account"}"
+                    } else {
+                        item.category?.name ?: "Transaction"
+                    },
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = MaterialTheme.colorScheme.onSurface,
+                    maxLines = 1
                 )
                 Text(
                     text = item.transaction.note?.ifBlank { null }
@@ -569,24 +609,40 @@ fun TransactionListItem(
                 )
             }
 
-            // Amount with explicit +/- sign and Direction Arrow for WCAG / Color-blind accessibility
+            // Amount with explicit sign or Transfer arrow
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
-                    painter = painterResource(id = if (isExpense) R.drawable.ic_tx_expense else R.drawable.ic_tx_income),
+                    painter = painterResource(
+                        id = when {
+                            isTransfer -> R.drawable.ic_tx_transfer
+                            isExpense -> R.drawable.ic_tx_expense
+                            else -> R.drawable.ic_tx_income
+                        }
+                    ),
                     contentDescription = null,
                     tint = amountColor,
                     modifier = Modifier.size(16.dp)
                 )
                 Spacer(modifier = Modifier.width(4.dp))
-                Text(
-                    text = CurrencyFormatter.formatAmount(
+                val amountText = if (isTransfer) {
+                    val destCurrency = item.toAccount?.currency ?: item.transaction.currency
+                    if (item.transaction.convertedAmount != null && !item.transaction.currency.equals(destCurrency, ignoreCase = true)) {
+                        "${CurrencyFormatter.formatAmount(item.transaction.amount, item.transaction.currency)} → ${CurrencyFormatter.formatAmount(item.transaction.convertedAmount, destCurrency)}"
+                    } else {
+                        CurrencyFormatter.formatAmount(item.transaction.amount, item.transaction.currency)
+                    }
+                } else {
+                    CurrencyFormatter.formatAmount(
                         amount = item.transaction.amount,
                         currency = item.transaction.currency,
                         showSign = true,
                         isExpense = isExpense
-                    ),
+                    )
+                }
+                Text(
+                    text = amountText,
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
                     color = amountColor

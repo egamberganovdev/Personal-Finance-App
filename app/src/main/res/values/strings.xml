@@ -57,9 +57,32 @@
     <string name="transaction_details">Transaction Details</string>
     <string name="type_expense">+ Expense</string>
     <string name="type_income">+ Income</string>
-    <string name="type_transfer">+ Transfer</string>
+    <string name="type_transfer">Transfer</string>
     <string name="type_scheduled">⏰ Scheduled</string>
-    <string name="transfer_coming_soon">Transfer is coming in future updates</string>
+    <string name="transfer_coming_soon">Transfer</string>
+    <string name="transfer_from_account">From Account</string>
+    <string name="transfer_to_account">To Account</string>
+    <string name="transfer_same_account_error">Source and destination accounts must be different</string>
+    <string name="transfer_insufficient_balance_error">Insufficient balance. Available: %s</string>
+    <string name="transfer_action_confirm">Transfer Money ✓</string>
+    <string name="transfer_currency_conversion">Currency Conversion</string>
+    <string name="currency_conversion">Currency Conversion</string>
+    <string name="transfer_exchange_rate">Exchange Rate</string>
+    <string name="transfer_exchange_rate_format">1 %1$s = %2$s %3$s</string>
+    <string name="transfer_destination_receives">Destination receives</string>
+    <string name="destination_receives">Destination Receives</string>
+    <string name="transfer_fetching_rate">Fetching live exchange rate…</string>
+    <string name="transfer_rate_fetch_failed">Unable to fetch live exchange rate. Check your internet connection.</string>
+    <string name="exchange_rate_error">Unable to fetch live exchange rate. Check your internet connection.</string>
+    <string name="transfer_retry">Retry</string>
+    <string name="transfer_need_at_least_two_accounts">You need at least 2 accounts to make a transfer.</string>
+    <string name="transfer_available_balance">Available: %s</string>
+    <string name="source_balance">Available: %s</string>
+    <string name="transfer_insufficient_funds">Insufficient balance in source account</string>
+    <string name="save_transfer">Save Transfer ✓</string>
+    <string name="edit_transfer">Update Transfer ✓</string>
+    <string name="filter_transfer">Transfer</string>
+    <string name="delete_transfer_confirm">Are you sure you want to delete this transfer? The transferred amounts will be reversed on both accounts.</string>
     <string name="amount">AMOUNT</string>
     <string name="select_category">Select Category</string>
     <string name="account">Account</string>
@@ -123,12 +146,24 @@
     <!-- Accounts -->
     <string name="accounts">Accounts</string>
     <string name="account_name">Account Name</string>
+    <string name="edit_account">Edit Account</string>
+    <string name="account_type">Account Type</string>
+    <string name="account_type_cash">Cash</string>
+    <string name="account_type_bank">Bank Account</string>
+    <string name="account_type_savings">Savings</string>
+    <string name="account_type_ewallet">E-Wallet</string>
+    <string name="account_type_investment">Investment</string>
+    <string name="account_type_loan_debt">Loan / Debt</string>
+    <string name="account_currency_locked_notice">Currency cannot be changed after creation to protect transaction history.</string>
     <string name="currency">Currency</string>
     <string name="initial_balance">Initial Balance</string>
     <string name="current_balance">Current Balance</string>
     <string name="cash_accounts_subtitle">%1$d account · %2$s</string>
-    <string name="delete_account_confirm">Are you sure you want to delete \"%s\"? All transactions in this account will be removed.</string>
-    <string name="cannot_delete_last_account">You must keep at least one active Cash account.</string>
+    <string name="delete_account_confirm">Are you sure you want to delete \"%s\"?</string>
+    <string name="cannot_delete_last_account">You must keep at least one active account.</string>
+    <string name="cannot_delete_account_title">Cannot Delete Account</string>
+    <string name="cannot_delete_account_has_transactions">This account contains transaction history and cannot be deleted. You can keep it to preserve your financial records.</string>
+    <string name="action_ok">OK</string>
 
     <!-- Menu & Settings -->
     <string name="my_finances">My Finances</string>

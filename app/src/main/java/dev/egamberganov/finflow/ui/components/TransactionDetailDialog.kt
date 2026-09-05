@@ -59,9 +59,14 @@ fun TransactionDetailDialog(
     onDismiss: () -> Unit
 ) {
     var showDeleteConfirmDialog by remember { mutableStateOf(false) }
+    val isTransfer = item.transaction.type == "TRANSFER"
     val isExpense = item.transaction.type == "EXPENSE"
     val dateFormatter = remember { SimpleDateFormat("MMMM dd, yyyy · HH:mm", Locale.getDefault()) }
-    val itemColor = if (isExpense) MaterialTheme.appColors.expense else MaterialTheme.appColors.income
+    val itemColor = when {
+        isTransfer -> MaterialTheme.appColors.brand
+        isExpense -> MaterialTheme.appColors.expense
+        else -> MaterialTheme.appColors.income
+    }
 
     Dialog(onDismissRequest = onDismiss) {
         Surface(
@@ -82,7 +87,7 @@ fun TransactionDetailDialog(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = stringResource(R.string.transaction_details),
+                        text = if (isTransfer) stringResource(R.string.type_transfer) else stringResource(R.string.transaction_details),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSurface
@@ -106,21 +111,48 @@ fun TransactionDetailDialog(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    CategoryIconBadge(
-                        iconName = item.category?.iconName ?: "other",
-                        colorHex = item.category?.colorHex ?: "#6C5CE7",
-                        categoryName = item.category?.name ?: "Other",
-                        size = 56.dp,
-                        iconSize = 28.dp
-                    )
+                    if (isTransfer) {
+                        Surface(
+                            modifier = Modifier.size(56.dp),
+                            shape = CircleShape,
+                            color = MaterialTheme.appColors.brand.copy(alpha = 0.15f)
+                        ) {
+                            Box(contentAlignment = Alignment.Center) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.ic_tx_transfer),
+                                    contentDescription = "Transfer",
+                                    tint = MaterialTheme.appColors.brand,
+                                    modifier = Modifier.size(28.dp)
+                                )
+                            }
+                        }
+                    } else {
+                        CategoryIconBadge(
+                            iconName = item.category?.iconName ?: "other",
+                            colorHex = item.category?.colorHex ?: "#6C5CE7",
+                            categoryName = item.category?.name ?: "Other",
+                            size = 56.dp,
+                            iconSize = 28.dp
+                        )
+                    }
                     Spacer(modifier = Modifier.height(12.dp))
-                    Text(
-                        text = CurrencyFormatter.formatAmount(
+                    val amountDisplayText = if (isTransfer) {
+                        val destCurr = item.toAccount?.currency ?: item.transaction.currency
+                        if (item.transaction.convertedAmount != null && !item.transaction.currency.equals(destCurr, ignoreCase = true)) {
+                            "${CurrencyFormatter.formatAmount(item.transaction.amount, item.transaction.currency)} → ${CurrencyFormatter.formatAmount(item.transaction.convertedAmount, destCurr)}"
+                        } else {
+                            CurrencyFormatter.formatAmount(item.transaction.amount, item.transaction.currency)
+                        }
+                    } else {
+                        CurrencyFormatter.formatAmount(
                             amount = item.transaction.amount,
                             currency = item.transaction.currency,
                             showSign = true,
                             isExpense = isExpense
-                        ),
+                        )
+                    }
+                    Text(
+                        text = amountDisplayText,
                         style = MaterialTheme.typography.displayMedium,
                         fontWeight = FontWeight.ExtraBold,
                         color = itemColor
@@ -131,7 +163,11 @@ fun TransactionDetailDialog(
                         modifier = Modifier.padding(top = 6.dp)
                     ) {
                         Text(
-                            text = if (isExpense) stringResource(R.string.type_expense) else stringResource(R.string.type_income),
+                            text = when {
+                                isTransfer -> stringResource(R.string.type_transfer)
+                                isExpense -> stringResource(R.string.type_expense)
+                                else -> stringResource(R.string.type_income)
+                            },
                             style = MaterialTheme.typography.labelSmall,
                             fontWeight = FontWeight.Bold,
                             color = itemColor,
@@ -145,21 +181,48 @@ fun TransactionDetailDialog(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 // Detail Rows
-                // Category
-                DetailInfoRow(
-                    drawableRes = CategoryVisuals.getDrawableForName(item.category?.name ?: item.category?.iconName ?: "other"),
-                    label = stringResource(R.string.categories),
-                    value = item.category?.name ?: "Unknown"
-                )
+                if (isTransfer) {
+                    // From Account
+                    DetailInfoRow(
+                        drawableRes = CategoryVisuals.getAccountDrawable(item.account?.type ?: "Cash"),
+                        label = stringResource(R.string.transfer_from_account),
+                        value = "${item.account?.name ?: "Account"} (${item.account?.currency ?: ""})"
+                    )
 
-                Spacer(modifier = Modifier.height(12.dp))
+                    Spacer(modifier = Modifier.height(12.dp))
 
-                // Account
-                DetailInfoRow(
-                    drawableRes = CategoryVisuals.getAccountDrawable(item.account?.type ?: "Cash"),
-                    label = stringResource(R.string.account),
-                    value = "${item.account?.name ?: "Cash"} (${item.account?.currency ?: "UZS"})"
-                )
+                    // To Account
+                    DetailInfoRow(
+                        drawableRes = CategoryVisuals.getAccountDrawable(item.toAccount?.type ?: "Cash"),
+                        label = stringResource(R.string.transfer_to_account),
+                        value = "${item.toAccount?.name ?: "Account"} (${item.toAccount?.currency ?: ""})"
+                    )
+
+                    if (item.transaction.exchangeRate != null) {
+                        Spacer(modifier = Modifier.height(12.dp))
+                        DetailInfoRow(
+                            drawableRes = R.drawable.ic_tx_transfer,
+                            label = stringResource(R.string.transfer_exchange_rate),
+                            value = "1 ${item.transaction.currency} = ${item.transaction.exchangeRate} ${item.toAccount?.currency ?: ""}"
+                        )
+                    }
+                } else {
+                    // Category
+                    DetailInfoRow(
+                        drawableRes = CategoryVisuals.getDrawableForName(item.category?.name ?: item.category?.iconName ?: "other"),
+                        label = stringResource(R.string.categories),
+                        value = item.category?.name ?: "Unknown"
+                    )
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    // Account
+                    DetailInfoRow(
+                        drawableRes = CategoryVisuals.getAccountDrawable(item.account?.type ?: "Cash"),
+                        label = stringResource(R.string.account),
+                        value = "${item.account?.name ?: "Cash"} (${item.account?.currency ?: "UZS"})"
+                    )
+                }
 
                 Spacer(modifier = Modifier.height(12.dp))
 
@@ -248,7 +311,12 @@ fun TransactionDetailDialog(
         AlertDialog(
             onDismissRequest = { showDeleteConfirmDialog = false },
             title = { Text(stringResource(R.string.action_delete)) },
-            text = { Text("Are you sure you want to delete this transaction?") },
+            text = {
+                Text(
+                    if (isTransfer) stringResource(R.string.delete_transfer_confirm)
+                    else "Are you sure you want to delete this transaction?"
+                )
+            },
             confirmButton = {
                 TextButton(
                     onClick = {

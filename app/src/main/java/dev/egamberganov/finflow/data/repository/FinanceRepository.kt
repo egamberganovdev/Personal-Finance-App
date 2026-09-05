@@ -8,6 +8,8 @@ import dev.egamberganov.finflow.data.entity.ScheduledPaymentEntity
 import dev.egamberganov.finflow.data.entity.ScheduledPaymentWithDetails
 import dev.egamberganov.finflow.data.entity.TransactionEntity
 import dev.egamberganov.finflow.data.entity.TransactionWithDetails
+import dev.egamberganov.finflow.data.network.ExchangeRateService
+import dev.egamberganov.finflow.domain.model.AccountType
 import dev.egamberganov.finflow.domain.model.AccountWithBalance
 import dev.egamberganov.finflow.domain.model.FinancialSummary
 import kotlinx.coroutines.flow.Flow
@@ -15,7 +17,10 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 
-class FinanceRepository(private val database: AppDatabase) {
+class FinanceRepository(
+    private val database: AppDatabase,
+    private val exchangeRateService: ExchangeRateService = ExchangeRateService()
+) {
     private val accountDao = database.accountDao()
     private val categoryDao = database.categoryDao()
     private val transactionDao = database.transactionDao()
@@ -37,14 +42,23 @@ class FinanceRepository(private val database: AppDatabase) {
         allTransactions
     ) { accounts, transactions ->
         accounts.map { account ->
-            val accountTx = transactions.filter { it.transaction.accountId == account.id }
+            val accountTx = transactions.filter {
+                it.transaction.accountId == account.id || it.transaction.toAccountId == account.id
+            }
             val totalIncome = accountTx
-                .filter { it.transaction.type == "INCOME" }
+                .filter { it.transaction.type == "INCOME" && it.transaction.accountId == account.id }
                 .sumOf { it.transaction.amount }
             val totalExpense = accountTx
-                .filter { it.transaction.type == "EXPENSE" }
+                .filter { it.transaction.type == "EXPENSE" && it.transaction.accountId == account.id }
                 .sumOf { it.transaction.amount }
-            val currentBalance = account.initialBalance + totalIncome - totalExpense
+            val totalTransferOut = accountTx
+                .filter { it.transaction.type == "TRANSFER" && it.transaction.accountId == account.id }
+                .sumOf { it.transaction.amount }
+            val totalTransferIn = accountTx
+                .filter { it.transaction.type == "TRANSFER" && it.transaction.toAccountId == account.id }
+                .sumOf { it.transaction.convertedAmount ?: it.transaction.amount }
+
+            val currentBalance = account.initialBalance + totalIncome - totalExpense - totalTransferOut + totalTransferIn
 
             AccountWithBalance(
                 account = account,
@@ -76,7 +90,9 @@ class FinanceRepository(private val database: AppDatabase) {
     ) { settings, transactions ->
         val selectedId = settings?.selectedAccountId
         if (selectedId != null) {
-            transactions.filter { it.transaction.accountId == selectedId }
+            transactions.filter {
+                it.transaction.accountId == selectedId || it.transaction.toAccountId == selectedId
+            }
         } else {
             transactions
         }
@@ -165,6 +181,7 @@ class FinanceRepository(private val database: AppDatabase) {
     // Onboarding Account Setup
     suspend fun completeOnboarding(
         accountName: String,
+        accountType: String = AccountType.CASH.dbKey,
         currency: String,
         initialBalance: Long
     ): Long {
@@ -172,7 +189,7 @@ class FinanceRepository(private val database: AppDatabase) {
 
         val account = AccountEntity(
             name = accountName.trim().ifEmpty { "My Wallet" },
-            type = "Cash",
+            type = accountType.trim().ifEmpty { AccountType.CASH.dbKey },
             currency = currency.trim().ifEmpty { "UZS" },
             initialBalance = initialBalance,
             colorHex = "#5E5CE6"
@@ -186,10 +203,16 @@ class FinanceRepository(private val database: AppDatabase) {
     }
 
     // Account Operations
-    suspend fun createAccount(name: String, currency: String, initialBalance: Long, colorHex: String): Long {
+    suspend fun createAccount(
+        name: String,
+        type: String = AccountType.CASH.dbKey,
+        currency: String,
+        initialBalance: Long,
+        colorHex: String
+    ): Long {
         val account = AccountEntity(
             name = name.trim(),
-            type = "Cash",
+            type = type.trim(),
             currency = currency.trim(),
             initialBalance = initialBalance,
             colorHex = colorHex
@@ -201,22 +224,55 @@ class FinanceRepository(private val database: AppDatabase) {
         accountDao.updateAccount(account)
     }
 
-    suspend fun deleteAccount(account: AccountEntity) {
+    suspend fun getTransactionCountForAccount(accountId: Long): Int {
+        return transactionDao.getTransactionCountForAccount(accountId)
+    }
+
+    suspend fun canDeleteAccount(accountId: Long): Boolean {
+        val txCount = transactionDao.getTransactionCountForAccount(accountId)
+        val scheduledCount = scheduledPaymentDao.getScheduledPaymentCountForAccount(accountId)
+        return txCount == 0 && scheduledCount == 0
+    }
+
+    suspend fun deleteAccount(account: AccountEntity): Boolean {
+        // Safe account deletion: refuse to delete if transactions or scheduled payments exist
+        if (!canDeleteAccount(account.id)) {
+            return false
+        }
         // If the deleted account was selected, reset to All Accounts
         val currentSettings = appSettingsDao.getSettingsDirect()
         if (currentSettings?.selectedAccountId == account.id) {
             appSettingsDao.setSelectedAccountId(null)
         }
         accountDao.deleteAccount(account)
+        return true
     }
 
     // Transaction Operations
+    suspend fun getExchangeRate(fromCurrency: String, toCurrency: String): Result<Double> {
+        return exchangeRateService.getExchangeRate(fromCurrency, toCurrency)
+    }
+
+    suspend fun getAccountBalance(accountId: Long): Long {
+        val account = accountDao.getAccountByIdDirect(accountId) ?: return 0L
+        val allTx = transactionDao.getAllTransactionsList()
+        val fromTx = allTx.filter { it.accountId == accountId || it.toAccountId == accountId }
+        val income = fromTx.filter { it.type == "INCOME" && it.accountId == accountId }.sumOf { it.amount }
+        val expense = fromTx.filter { it.type == "EXPENSE" && it.accountId == accountId }.sumOf { it.amount }
+        val transferOut = fromTx.filter { it.type == "TRANSFER" && it.accountId == accountId }.sumOf { it.amount }
+        val transferIn = fromTx.filter { it.type == "TRANSFER" && it.toAccountId == accountId }.sumOf { it.convertedAmount ?: it.amount }
+        return account.initialBalance + income - expense - transferOut + transferIn
+    }
+
     suspend fun createTransaction(
         type: String,
         amount: Long,
         currency: String,
-        categoryId: Long,
+        categoryId: Long?,
         accountId: Long,
+        toAccountId: Long? = null,
+        exchangeRate: Double? = null,
+        convertedAmount: Long? = null,
         dateMillis: Long,
         note: String?,
         attachmentUri: String?
@@ -227,11 +283,76 @@ class FinanceRepository(private val database: AppDatabase) {
             currency = currency,
             categoryId = categoryId,
             accountId = accountId,
+            toAccountId = toAccountId,
+            exchangeRate = exchangeRate,
+            convertedAmount = convertedAmount,
             dateMillis = dateMillis,
             note = note?.trim()?.ifEmpty { null },
             attachmentUri = attachmentUri?.trim()?.ifEmpty { null }
         )
         return transactionDao.insertTransaction(transaction)
+    }
+
+    suspend fun createTransfer(
+        fromAccountId: Long,
+        toAccountId: Long,
+        amount: Long,
+        dateMillis: Long,
+        note: String?,
+        attachmentUri: String? = null,
+        exchangeRate: Double? = null,
+        convertedAmount: Long? = null
+    ): Result<Long> {
+        if (amount <= 0) {
+            return Result.failure(IllegalArgumentException("Transfer amount must be greater than zero"))
+        }
+        if (fromAccountId == toAccountId) {
+            return Result.failure(IllegalArgumentException("Source and destination accounts must be different"))
+        }
+
+        val fromAccount = accountDao.getAccountByIdDirect(fromAccountId)
+            ?: return Result.failure(IllegalArgumentException("Source account not found"))
+        val toAccount = accountDao.getAccountByIdDirect(toAccountId)
+            ?: return Result.failure(IllegalArgumentException("Destination account not found"))
+
+        val currentBalance = getAccountBalance(fromAccountId)
+        if (amount > currentBalance) {
+            return Result.failure(IllegalStateException("Insufficient funds in source account"))
+        }
+
+        val isDifferentCurrency = !fromAccount.currency.equals(toAccount.currency, ignoreCase = true)
+        val finalRate: Double?
+        val finalConvertedAmount: Long?
+
+        if (isDifferentCurrency) {
+            if (exchangeRate == null || exchangeRate <= 0.0) {
+                return Result.failure(IllegalArgumentException("Exchange rate required for different currencies"))
+            }
+            if (convertedAmount == null || convertedAmount <= 0) {
+                return Result.failure(IllegalArgumentException("Converted amount must be greater than zero"))
+            }
+            finalRate = exchangeRate
+            finalConvertedAmount = convertedAmount
+        } else {
+            finalRate = null
+            finalConvertedAmount = amount
+        }
+
+        val transaction = TransactionEntity(
+            type = "TRANSFER",
+            amount = amount,
+            currency = fromAccount.currency,
+            categoryId = null,
+            accountId = fromAccountId,
+            toAccountId = toAccountId,
+            exchangeRate = finalRate,
+            convertedAmount = finalConvertedAmount,
+            dateMillis = dateMillis,
+            note = note?.trim()?.ifEmpty { null },
+            attachmentUri = attachmentUri?.trim()?.ifEmpty { null }
+        )
+        val id = transactionDao.insertTransaction(transaction)
+        return Result.success(id)
     }
 
     suspend fun updateTransaction(transaction: TransactionEntity) {

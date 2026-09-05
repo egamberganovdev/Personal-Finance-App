@@ -39,4 +39,7 @@ interface ScheduledPaymentDao {
 
     @Query("UPDATE scheduled_payments SET isActive = :isActive WHERE id = :id")
     suspend fun toggleActive(id: Long, isActive: Boolean)
+
+    @Query("SELECT COUNT(*) FROM scheduled_payments WHERE accountId = :accountId")
+    suspend fun getScheduledPaymentCountForAccount(accountId: Long): Int
 }

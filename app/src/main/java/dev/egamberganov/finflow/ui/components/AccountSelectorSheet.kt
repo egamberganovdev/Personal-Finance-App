@@ -209,8 +209,9 @@ fun AccountSelectorSheet(
                                     fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colorScheme.onSurface
                                 )
+                                val typeLabel = stringResource(acc.accountType.stringResId)
                                 Text(
-                                    text = "${acc.type} · ${CurrencyFormatter.formatAmount(acc.currentBalance, acc.currency)}",
+                                    text = "$typeLabel · ${CurrencyFormatter.formatAmount(acc.currentBalance, acc.currency)}",
                                     style = MaterialTheme.typography.bodySmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )

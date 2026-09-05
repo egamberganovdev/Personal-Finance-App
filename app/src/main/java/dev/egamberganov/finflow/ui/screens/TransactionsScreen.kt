@@ -174,6 +174,7 @@ fun TransactionsScreen(
                     TransactionFilterType.ALL -> MaterialTheme.appColors.brand
                     TransactionFilterType.INCOME -> MaterialTheme.appColors.income
                     TransactionFilterType.EXPENSE -> MaterialTheme.appColors.expense
+                    TransactionFilterType.TRANSFER -> MaterialTheme.appColors.brand
                 }
 
                 Surface(
@@ -195,6 +196,7 @@ fun TransactionsScreen(
                                 TransactionFilterType.ALL -> stringResource(R.string.filter_all)
                                 TransactionFilterType.INCOME -> stringResource(R.string.filter_income)
                                 TransactionFilterType.EXPENSE -> stringResource(R.string.filter_expense)
+                                TransactionFilterType.TRANSFER -> stringResource(R.string.filter_transfer)
                             },
                             style = MaterialTheme.typography.labelMedium,
                             fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
