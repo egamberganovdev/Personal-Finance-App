@@ -25,6 +25,13 @@ interface ScheduledPaymentDao {
     @Query("SELECT * FROM scheduled_payments WHERE isActive = 1 ORDER BY nextPaymentDateMillis ASC")
     fun getActiveScheduledPaymentsWithDetails(): Flow<List<ScheduledPaymentWithDetails>>
 
+    @Transaction
+    @Query("SELECT * FROM scheduled_payments WHERE isActive = 1 ORDER BY nextPaymentDateMillis ASC")
+    suspend fun getActiveScheduledPaymentsWithDetailsDirect(): List<ScheduledPaymentWithDetails>
+
+    @Query("SELECT * FROM scheduled_payments WHERE id = :id")
+    suspend fun getScheduledPaymentById(id: Long): ScheduledPaymentEntity?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertScheduledPayment(scheduledPayment: ScheduledPaymentEntity): Long
 

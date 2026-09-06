@@ -298,7 +298,7 @@ class FinanceRepository(
         toAccountId: Long,
         amount: Long,
         dateMillis: Long,
-        note: String?,
+        note: String? = null,
         attachmentUri: String? = null,
         exchangeRate: Double? = null,
         convertedAmount: Long? = null

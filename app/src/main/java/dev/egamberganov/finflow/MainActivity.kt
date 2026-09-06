@@ -125,8 +125,14 @@ fun FinanceAppRoot(viewModel: FinanceViewModel) {
     val incomeCategories by viewModel.incomeCategories.collectAsState()
 
     val transactionFilterType by viewModel.transactionFilterType.collectAsState()
+    val filterAccountId by viewModel.filterAccountId.collectAsState()
     val transactionDateRange by viewModel.transactionDateRange.collectAsState()
     val filterCategoryId by viewModel.filterCategoryId.collectAsState()
+    val customStartDateMillis by viewModel.customStartDateMillis.collectAsState()
+    val customEndDateMillis by viewModel.customEndDateMillis.collectAsState()
+    val minAmount by viewModel.minAmount.collectAsState()
+    val maxAmount by viewModel.maxAmount.collectAsState()
+    val activeFiltersCount by viewModel.activeFiltersCount.collectAsState()
     val searchQuery by viewModel.searchQuery.collectAsState()
 
     val selectedPeriod by viewModel.selectedPeriod.collectAsState()
@@ -208,14 +214,29 @@ fun FinanceAppRoot(viewModel: FinanceViewModel) {
                         TransactionsScreen(
                             transactions = filteredTransactions,
                             categories = allCategories,
+                            accounts = allAccounts,
                             typeFilter = transactionFilterType,
-                            dateRange = transactionDateRange,
+                            filterAccountId = filterAccountId,
                             selectedCategoryId = filterCategoryId,
+                            dateRange = transactionDateRange,
+                            customStartDateMillis = customStartDateMillis,
+                            customEndDateMillis = customEndDateMillis,
+                            minAmount = minAmount,
+                            maxAmount = maxAmount,
+                            activeFiltersCount = activeFiltersCount,
                             searchQuery = searchQuery,
                             onTypeFilterChange = { viewModel.setTransactionFilterType(it) },
-                            onDateRangeChange = { viewModel.setTransactionDateRange(it) },
+                            onAccountFilterChange = { viewModel.setFilterAccountId(it) },
                             onCategoryFilterChange = { viewModel.setFilterCategoryId(it) },
+                            onDateRangeChange = { viewModel.setTransactionDateRange(it) },
+                            onCustomDateRangeChange = { start, end -> viewModel.setCustomDateRange(start, end) },
+                            onAmountRangeChange = { min, max -> viewModel.setAmountRange(min, max) },
+                            onApplyAdvancedFilters = { type, acc, cat, dRange, start, end, min, max ->
+                                viewModel.applyAdvancedFilters(type, acc, cat, dRange, start, end, min, max)
+                            },
+                            onClearAllFilters = { viewModel.clearAllFilters() },
                             onSearchQueryChange = { viewModel.setSearchQuery(it) },
+                            onClearSearch = { viewModel.clearSearchQuery() },
                             onTransactionClick = { tx -> selectedDetailTransaction = tx }
                         )
                     }

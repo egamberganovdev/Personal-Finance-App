@@ -93,10 +93,12 @@ enum class TransactionFilterType(val label: String) {
 }
 
 enum class DateFilterRange(val label: String) {
-    THIS_MONTH("This Month"),
+    ALL_TIME("All Time"),
+    TODAY("Today"),
     THIS_WEEK("This Week"),
+    THIS_MONTH("This Month"),
     THIS_YEAR("This Year"),
-    ALL_TIME("All Time")
+    CUSTOM("Custom")
 }
 
 object CurrencyFormatter {
@@ -131,5 +133,61 @@ object CurrencyFormatter {
             else -> amount.toString()
         }
         return compactStr
+    }
+}
+
+enum class ScheduledPaymentStatus {
+    OVERDUE,
+    DUE_TODAY,
+    UPCOMING
+}
+
+data class ScheduledPaymentStatusInfo(
+    val status: ScheduledPaymentStatus,
+    val daysDifference: Long // negative if overdue (e.g. -2 for 2 days overdue), 0 if due today, positive if upcoming (e.g. 3 for in 3 days)
+)
+
+object ScheduledPaymentCalculator {
+    fun calculateStatus(
+        nextPaymentDateMillis: Long,
+        referenceTimeMillis: Long = System.currentTimeMillis()
+    ): ScheduledPaymentStatusInfo {
+        val calTarget = java.util.Calendar.getInstance().apply {
+            timeInMillis = nextPaymentDateMillis
+            set(java.util.Calendar.HOUR_OF_DAY, 0)
+            set(java.util.Calendar.MINUTE, 0)
+            set(java.util.Calendar.SECOND, 0)
+            set(java.util.Calendar.MILLISECOND, 0)
+        }
+        val calRef = java.util.Calendar.getInstance().apply {
+            timeInMillis = referenceTimeMillis
+            set(java.util.Calendar.HOUR_OF_DAY, 0)
+            set(java.util.Calendar.MINUTE, 0)
+            set(java.util.Calendar.SECOND, 0)
+            set(java.util.Calendar.MILLISECOND, 0)
+        }
+        val diffMillis = calTarget.timeInMillis - calRef.timeInMillis
+        val diffDays = java.util.concurrent.TimeUnit.MILLISECONDS.toDays(diffMillis)
+
+        val status = when {
+            diffDays < 0 -> ScheduledPaymentStatus.OVERDUE
+            diffDays == 0L -> ScheduledPaymentStatus.DUE_TODAY
+            else -> ScheduledPaymentStatus.UPCOMING
+        }
+        return ScheduledPaymentStatusInfo(status, diffDays)
+    }
+
+    fun calculateNextDate(currentNextDateMillis: Long, frequency: String): Long {
+        val cal = java.util.Calendar.getInstance().apply {
+            timeInMillis = currentNextDateMillis
+        }
+        when (frequency.trim().uppercase()) {
+            "DAILY" -> cal.add(java.util.Calendar.DAY_OF_YEAR, 1)
+            "WEEKLY" -> cal.add(java.util.Calendar.WEEK_OF_YEAR, 1)
+            "MONTHLY" -> cal.add(java.util.Calendar.MONTH, 1)
+            "YEARLY" -> cal.add(java.util.Calendar.YEAR, 1)
+            else -> cal.add(java.util.Calendar.MONTH, 1)
+        }
+        return cal.timeInMillis
     }
 }

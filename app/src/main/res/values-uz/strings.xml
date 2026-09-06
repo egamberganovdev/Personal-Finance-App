@@ -45,11 +45,37 @@
     <string name="this_week">Shu hafta</string>
     <string name="this_year">Shu yil</string>
     <string name="all_time">Barcha vaqt</string>
+    <string name="custom_range">Boshqa oraliq</string>
     <string name="categories">Kategoriyalar</string>
     <string name="search_transactions">Tranzaksiyalarni qidirish…</string>
     <string name="entries_count">%d ta yozuv</string>
     <string name="no_transactions_found">Tranzaksiyalar topilmadi</string>
     <string name="add_first_transaction">Birinchi tranzaksiyangizni qo\'shish uchun + tugmasini bosing.</string>
+    <string name="filters">Filtrlar</string>
+    <string name="filter_transactions">Tranzaksiyalarni filtrlash</string>
+    <string name="filter_by_type">TRANZAKSIYA TURI</string>
+    <string name="filter_by_account">HISOB</string>
+    <string name="filter_by_category">KATEGORIYA</string>
+    <string name="filter_by_date">SANA ORALIG\'I</string>
+    <string name="filter_by_amount">SUMMA ORALIG\'I</string>
+    <string name="apply_filters">Filtrlarni qo\'llash</string>
+    <string name="reset_filters">Tozalash</string>
+    <string name="clear_filters">Filtrlarni tozalash</string>
+    <string name="clear_search">Qidiruvni tozalash</string>
+    <string name="clear_all_filters">Hammasini tozalash</string>
+    <string name="active_filters_count">%d ta faol</string>
+    <string name="all_categories">Barcha kategoriyalar</string>
+    <string name="min_amount">Min summa</string>
+    <string name="max_amount">Maks summa</string>
+    <string name="start_date">Boshlanish sanasi</string>
+    <string name="end_date">Tugash sanasi</string>
+    <string name="no_search_results_title">Tranzaksiyalar topilmadi</string>
+    <string name="no_search_results_desc">\"%s\" bo\'yicha hech qanday tranzaksiya topilmadi. Boshqa so\'z bilan qidiring.</string>
+    <string name="no_filter_results_title">Filtrga mos tranzaksiya yo\'q</string>
+    <string name="no_filter_results_desc">Tanlangan filtrlarga mos tranzaksiyalar topilmadi. Filtrlarni o\'zgartirib ko\'ring.</string>
+    <string name="invalid_amount_range_error">Minimal summa maksimal summadan katta bo\'lishi mumkin emas</string>
+    <string name="invalid_date_range_error">Boshlanish sanasi tugash sanasidan keyin bo\'lishi mumkin emas</string>
+    <string name="filtered_results_summary">%1$d ta faol filtr • %2$d ta natija</string>
 
     <!-- Add / Edit Transaction -->
     <string name="add_transaction">Tranzaksiya qo\'shish</string>

@@ -7,6 +7,7 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,10 +23,13 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.TrendingDown
 import androidx.compose.material.icons.automirrored.outlined.TrendingUp
+import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material.icons.outlined.ChevronRight
 import androidx.compose.material.icons.outlined.KeyboardArrowDown
 import androidx.compose.material.icons.outlined.ReceiptLong
 import androidx.compose.material.icons.outlined.Schedule
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -53,6 +57,8 @@ import dev.egamberganov.finflow.domain.GreetingProvider
 import dev.egamberganov.finflow.domain.model.AccountWithBalance
 import dev.egamberganov.finflow.domain.model.CurrencyFormatter
 import dev.egamberganov.finflow.domain.model.FinancialSummary
+import dev.egamberganov.finflow.domain.model.ScheduledPaymentCalculator
+import dev.egamberganov.finflow.domain.model.ScheduledPaymentStatus
 import dev.egamberganov.finflow.ui.components.CategoryIconBadge
 import dev.egamberganov.finflow.ui.components.CategoryVisuals
 import dev.egamberganov.finflow.ui.theme.BrandPrimary
@@ -75,6 +81,7 @@ fun HomeScreen(
     onViewAllTransactions: () -> Unit,
     onTransactionClick: (TransactionWithDetails) -> Unit,
     onScheduledPaymentClick: (ScheduledPaymentWithDetails) -> Unit,
+    onRecordPaymentAsPaid: (ScheduledPaymentWithDetails) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val scrollState = rememberScrollState()
@@ -191,10 +198,11 @@ fun HomeScreen(
                     .horizontalScroll(rememberScrollState()),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                upcomingPayments.take(4).forEach { payment ->
+                upcomingPayments.take(6).forEach { payment ->
                     UpcomingPaymentCard(
                         payment = payment,
-                        onClick = { onScheduledPaymentClick(payment) }
+                        onClick = { onScheduledPaymentClick(payment) },
+                        onPaidClick = { onRecordPaymentAsPaid(payment) }
                     )
                 }
             }
@@ -455,74 +463,141 @@ private fun BalanceOverviewCard(
 private fun UpcomingPaymentCard(
     payment: ScheduledPaymentWithDetails,
     onClick: () -> Unit,
+    onPaidClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val diffMillis = payment.scheduledPayment.nextPaymentDateMillis - System.currentTimeMillis()
-    val diffDays = TimeUnit.MILLISECONDS.toDays(diffMillis).toInt()
+    val statusInfo = ScheduledPaymentCalculator.calculateStatus(payment.scheduledPayment.nextPaymentDateMillis)
+    val status = statusInfo.status
+    val daysDiff = statusInfo.daysDifference
 
-    val daysRemainingText = when {
-        diffDays <= 0 -> stringResource(R.string.due_today)
-        else -> stringResource(R.string.in_days, diffDays)
+    val (badgeText, badgeColor, barColor) = when (status) {
+        ScheduledPaymentStatus.OVERDUE -> {
+            val days = Math.abs(daysDiff)
+            val text = if (days <= 1) stringResource(R.string.overdue_by_one_day) else stringResource(R.string.overdue_by_days, days.toInt())
+            Triple(text.uppercase(), MaterialTheme.colorScheme.error, MaterialTheme.colorScheme.error)
+        }
+        ScheduledPaymentStatus.DUE_TODAY -> {
+            Triple(stringResource(R.string.status_due_today).uppercase(), MaterialTheme.appColors.upcoming, MaterialTheme.appColors.upcoming)
+        }
+        ScheduledPaymentStatus.UPCOMING -> {
+            val text = if (daysDiff == 1L) stringResource(R.string.due_tomorrow) else stringResource(R.string.due_in_days, daysDiff.toInt())
+            Triple(text.uppercase(), MaterialTheme.appColors.brand, MaterialTheme.appColors.brand)
+        }
     }
 
     Surface(
         modifier = modifier
-            .width(220.dp)
+            .width(230.dp)
             .clip(RoundedCornerShape(20.dp))
             .clickable(onClick = onClick)
             .testTag("upcoming_payment_${payment.scheduledPayment.id}"),
         shape = RoundedCornerShape(20.dp),
         color = MaterialTheme.colorScheme.surface,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.25f))
+        border = BorderStroke(
+            1.dp,
+            if (status == ScheduledPaymentStatus.OVERDUE) MaterialTheme.colorScheme.error.copy(alpha = 0.5f)
+            else MaterialTheme.colorScheme.outline.copy(alpha = 0.25f)
+        )
     ) {
-        Row(
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(14.dp),
-            verticalAlignment = Alignment.CenterVertically
+                .padding(14.dp)
         ) {
-            // Left Accent Bar (Upcoming Amber Indicator)
-            Box(
-                modifier = Modifier
-                    .width(4.dp)
-                    .height(44.dp)
-                    .clip(RoundedCornerShape(2.dp))
-                    .background(MaterialTheme.appColors.upcoming)
-            )
+            // Header Row: Status Chip & Amount
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Surface(
+                    shape = RoundedCornerShape(8.dp),
+                    color = barColor.copy(alpha = 0.14f),
+                    border = BorderStroke(0.5.dp, barColor.copy(alpha = 0.35f))
+                ) {
+                    Text(
+                        text = badgeText,
+                        style = MaterialTheme.typography.labelSmall,
+                        fontSize = 9.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = badgeColor,
+                        letterSpacing = 0.5.sp,
+                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 3.dp)
+                    )
+                }
 
-            Spacer(modifier = Modifier.width(12.dp))
-
-            Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = stringResource(R.string.scheduled_payment).uppercase(),
-                    style = MaterialTheme.typography.labelSmall,
-                    fontSize = 9.sp,
+                    text = CurrencyFormatter.formatCompactAmount(payment.scheduledPayment.amount, payment.scheduledPayment.currency),
+                    style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.appColors.upcoming,
-                    letterSpacing = 0.8.sp
-                )
-                Text(
-                    text = payment.scheduledPayment.name,
-                    style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    maxLines = 1
-                )
-                Text(
-                    text = daysRemainingText,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = MaterialTheme.colorScheme.onSurface
                 )
             }
 
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.height(10.dp))
 
-            Text(
-                text = CurrencyFormatter.formatCompactAmount(payment.scheduledPayment.amount, payment.scheduledPayment.currency),
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onSurface
-            )
+            // Middle: Category Icon + Payment Name + Account info
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                CategoryIconBadge(
+                    iconName = payment.category?.iconName ?: "bills",
+                    colorHex = payment.category?.colorHex ?: "#6C5CE7",
+                    categoryName = payment.category?.name ?: payment.scheduledPayment.name,
+                    size = 36.dp,
+                    iconSize = 18.dp
+                )
+
+                Spacer(modifier = Modifier.width(10.dp))
+
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = payment.scheduledPayment.name,
+                        style = MaterialTheme.typography.titleSmall,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        maxLines = 1
+                    )
+                    Text(
+                        text = payment.account?.name ?: stringResource(R.string.account_name),
+                        style = MaterialTheme.typography.bodySmall,
+                        fontSize = 11.sp,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 1
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            // Bottom: One-click "Paid" Button
+            Button(
+                onClick = onPaidClick,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(34.dp)
+                    .testTag("home_scheduled_paid_${payment.scheduledPayment.id}"),
+                shape = RoundedCornerShape(10.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = if (status == ScheduledPaymentStatus.OVERDUE) MaterialTheme.colorScheme.error else MaterialTheme.appColors.brand
+                ),
+                contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Check,
+                    contentDescription = null,
+                    modifier = Modifier.size(14.dp),
+                    tint = Color.White
+                )
+                Spacer(modifier = Modifier.width(6.dp))
+                Text(
+                    text = stringResource(R.string.paid_action),
+                    style = MaterialTheme.typography.labelSmall,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                )
+            }
         }
     }
 }

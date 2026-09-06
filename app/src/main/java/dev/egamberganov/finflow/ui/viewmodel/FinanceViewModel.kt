@@ -14,9 +14,12 @@ import dev.egamberganov.finflow.data.repository.FinanceRepository
 import dev.egamberganov.finflow.domain.model.AccountType
 import dev.egamberganov.finflow.domain.model.AccountWithBalance
 import dev.egamberganov.finflow.domain.model.CategorySpend
+import dev.egamberganov.finflow.domain.model.CurrencyFormatter
 import dev.egamberganov.finflow.domain.model.DateFilterRange
 import dev.egamberganov.finflow.domain.model.FinancialSummary
 import dev.egamberganov.finflow.domain.model.PeriodActivity
+import dev.egamberganov.finflow.domain.model.ScheduledPaymentCalculator
+import dev.egamberganov.finflow.domain.model.ScheduledPaymentStatus
 import dev.egamberganov.finflow.domain.model.TimePeriod
 import dev.egamberganov.finflow.domain.model.TransactionFilterType
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -65,75 +68,151 @@ class FinanceViewModel(
     private val _transactionFilterType = MutableStateFlow(TransactionFilterType.ALL)
     val transactionFilterType: StateFlow<TransactionFilterType> = _transactionFilterType.asStateFlow()
 
-    private val _transactionDateRange = MutableStateFlow(DateFilterRange.THIS_MONTH)
-    val transactionDateRange: StateFlow<DateFilterRange> = _transactionDateRange.asStateFlow()
+    private val _filterAccountId = MutableStateFlow<Long?>(null)
+    val filterAccountId: StateFlow<Long?> = _filterAccountId.asStateFlow()
 
     private val _filterCategoryId = MutableStateFlow<Long?>(null)
     val filterCategoryId: StateFlow<Long?> = _filterCategoryId.asStateFlow()
 
+    private val _transactionDateRange = MutableStateFlow(DateFilterRange.ALL_TIME)
+    val transactionDateRange: StateFlow<DateFilterRange> = _transactionDateRange.asStateFlow()
+
+    private val _customStartDateMillis = MutableStateFlow<Long?>(null)
+    val customStartDateMillis: StateFlow<Long?> = _customStartDateMillis.asStateFlow()
+
+    private val _customEndDateMillis = MutableStateFlow<Long?>(null)
+    val customEndDateMillis: StateFlow<Long?> = _customEndDateMillis.asStateFlow()
+
+    private val _minAmount = MutableStateFlow<Long?>(null)
+    val minAmount: StateFlow<Long?> = _minAmount.asStateFlow()
+
+    private val _maxAmount = MutableStateFlow<Long?>(null)
+    val maxAmount: StateFlow<Long?> = _maxAmount.asStateFlow()
+
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
 
+    // Active Filters Count (excluding default ALL_TIME and ALL)
+    val activeFiltersCount: StateFlow<Int> = combine(
+        listOf<kotlinx.coroutines.flow.Flow<*>>(
+            _transactionFilterType,
+            _filterAccountId,
+            _filterCategoryId,
+            _transactionDateRange,
+            _minAmount,
+            _maxAmount
+        )
+    ) { args ->
+        val type = args[0] as TransactionFilterType
+        val accountId = args[1] as Long?
+        val categoryId = args[2] as Long?
+        val dateRange = args[3] as DateFilterRange
+        val min = args[4] as Long?
+        val max = args[5] as Long?
+        var count = 0
+        if (type != TransactionFilterType.ALL) count++
+        if (accountId != null) count++
+        if (categoryId != null) count++
+        if (dateRange != DateFilterRange.ALL_TIME) count++
+        if (min != null || max != null) count++
+        count
+    }.stateIn(viewModelScope, SharingStarted.Eagerly, 0)
+
     // Filtered Transactions
     val filteredTransactions: StateFlow<List<TransactionWithDetails>> = combine(
-        repository.currentContextTransactions,
-        _transactionFilterType,
-        _transactionDateRange,
-        _filterCategoryId,
-        _searchQuery
-    ) { transactions, typeFilter, dateRange, categoryId, search ->
-        val startOfRangeMillis: Long = when (dateRange) {
-            DateFilterRange.THIS_WEEK -> {
-                val cal = Calendar.getInstance().apply {
-                    set(Calendar.DAY_OF_WEEK, firstDayOfWeek)
-                    set(Calendar.HOUR_OF_DAY, 0)
-                    set(Calendar.MINUTE, 0)
-                    set(Calendar.SECOND, 0)
-                    set(Calendar.MILLISECOND, 0)
-                }
-                cal.timeInMillis
-            }
-            DateFilterRange.THIS_MONTH -> {
-                val cal = Calendar.getInstance().apply {
-                    set(Calendar.DAY_OF_MONTH, 1)
-                    set(Calendar.HOUR_OF_DAY, 0)
-                    set(Calendar.MINUTE, 0)
-                    set(Calendar.SECOND, 0)
-                    set(Calendar.MILLISECOND, 0)
-                }
-                cal.timeInMillis
-            }
-            DateFilterRange.THIS_YEAR -> {
-                val cal = Calendar.getInstance().apply {
-                    set(Calendar.DAY_OF_YEAR, 1)
-                    set(Calendar.HOUR_OF_DAY, 0)
-                    set(Calendar.MINUTE, 0)
-                    set(Calendar.SECOND, 0)
-                    set(Calendar.MILLISECOND, 0)
-                }
-                cal.timeInMillis
-            }
-            DateFilterRange.ALL_TIME -> 0L
-        }
+        listOf<kotlinx.coroutines.flow.Flow<*>>(
+            repository.currentContextTransactions,
+            _transactionFilterType,
+            _filterAccountId,
+            _filterCategoryId,
+            _transactionDateRange,
+            _customStartDateMillis,
+            _customEndDateMillis,
+            _minAmount,
+            _maxAmount,
+            _searchQuery
+        )
+    ) { args ->
+        @Suppress("UNCHECKED_CAST")
+        val transactions = args[0] as List<TransactionWithDetails>
+        val typeFilter = args[1] as TransactionFilterType
+        val filterAccId = args[2] as Long?
+        val catId = args[3] as Long?
+        val dateRange = args[4] as DateFilterRange
+        val customStart = args[5] as Long?
+        val customEnd = args[6] as Long?
+        val minAmt = args[7] as Long?
+        val maxAmt = args[8] as Long?
+        val search = args[9] as String
+
+        val (startMillis, endMillis) = calculateDateBounds(dateRange, customStart, customEnd)
 
         transactions.filter { item ->
+            // 1. Transaction Type
             val matchesType = when (typeFilter) {
                 TransactionFilterType.ALL -> true
                 TransactionFilterType.INCOME -> item.transaction.type == "INCOME"
                 TransactionFilterType.EXPENSE -> item.transaction.type == "EXPENSE"
                 TransactionFilterType.TRANSFER -> item.transaction.type == "TRANSFER"
             }
-            val matchesDate = item.transaction.dateMillis >= startOfRangeMillis
-            val matchesCategory = categoryId == null || item.transaction.categoryId == categoryId
+
+            // 2. Account Filter (matches primary or destination account for transfers)
+            val matchesAccount = if (filterAccId == null) {
+                true
+            } else {
+                item.transaction.accountId == filterAccId || item.transaction.toAccountId == filterAccId
+            }
+
+            // 3. Category Filter (Transfers have no category; when catId == null, transfers are included)
+            val matchesCategory = if (catId == null) {
+                true
+            } else {
+                item.transaction.categoryId == catId
+            }
+
+            // 4. Date Range
+            val matchesDate = item.transaction.dateMillis in startMillis..endMillis
+
+            // 5. Amount Range
+            val matchesAmount = (minAmt == null || item.transaction.amount >= minAmt) &&
+                    (maxAmt == null || item.transaction.amount <= maxAmt)
+
+            // 6. Search Query (case-insensitive, all fields)
             val matchesSearch = if (search.isBlank()) true else {
                 val q = search.trim().lowercase()
-                val catName = item.category?.name?.lowercase() ?: ""
                 val note = item.transaction.note?.lowercase() ?: ""
+                val catName = item.category?.name?.lowercase() ?: ""
                 val accName = item.account?.name?.lowercase() ?: ""
                 val toAccName = item.toAccount?.name?.lowercase() ?: ""
-                catName.contains(q) || note.contains(q) || accName.contains(q) || toAccName.contains(q) || item.transaction.amount.toString().contains(q)
+                val amountRaw = item.transaction.amount.toString()
+                val currency = item.transaction.currency.lowercase()
+                val formattedAmount = CurrencyFormatter.formatAmount(item.transaction.amount, item.transaction.currency).lowercase()
+                val type = item.transaction.type.lowercase()
+                val typeLabel = when (item.transaction.type) {
+                    "INCOME" -> "income"
+                    "EXPENSE" -> "expense"
+                    "TRANSFER" -> "transfer"
+                    else -> ""
+                }
+                val convertedAmountRaw = item.transaction.convertedAmount?.toString() ?: ""
+                val formattedConverted = item.transaction.convertedAmount?.let {
+                    CurrencyFormatter.formatAmount(it, item.toAccount?.currency ?: item.transaction.currency).lowercase()
+                } ?: ""
+
+                note.contains(q) ||
+                catName.contains(q) ||
+                accName.contains(q) ||
+                toAccName.contains(q) ||
+                amountRaw.contains(q) ||
+                currency.contains(q) ||
+                formattedAmount.contains(q) ||
+                type.contains(q) ||
+                typeLabel.contains(q) ||
+                convertedAmountRaw.contains(q) ||
+                formattedConverted.contains(q)
             }
-            matchesType && matchesDate && matchesCategory && matchesSearch
+
+            matchesType && matchesAccount && matchesCategory && matchesDate && matchesAmount && matchesSearch
         }
     }.stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 
@@ -147,7 +226,18 @@ class FinanceViewModel(
         .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 
     val upcomingPayments: StateFlow<List<ScheduledPaymentWithDetails>> = allScheduledPayments
-        .map { list -> list.filter { it.scheduledPayment.isActive } }
+        .map { list ->
+            list.filter { it.scheduledPayment.isActive }
+                .sortedWith(
+                    compareBy<ScheduledPaymentWithDetails> {
+                        when (ScheduledPaymentCalculator.calculateStatus(it.scheduledPayment.nextPaymentDateMillis).status) {
+                            ScheduledPaymentStatus.OVERDUE -> 0
+                            ScheduledPaymentStatus.DUE_TODAY -> 1
+                            ScheduledPaymentStatus.UPCOMING -> 2
+                        }
+                    }.thenBy { it.scheduledPayment.nextPaymentDateMillis }
+                )
+        }
         .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 
     // Statistics Period & Aggregations
@@ -312,6 +402,10 @@ class FinanceViewModel(
         _transactionFilterType.value = type
     }
 
+    fun setFilterAccountId(accountId: Long?) {
+        _filterAccountId.value = accountId
+    }
+
     fun setTransactionDateRange(range: DateFilterRange) {
         _transactionDateRange.value = range
     }
@@ -322,6 +416,57 @@ class FinanceViewModel(
 
     fun setSearchQuery(query: String) {
         _searchQuery.value = query
+    }
+
+    fun setCustomDateRange(startMillis: Long?, endMillis: Long?) {
+        _customStartDateMillis.value = startMillis
+        _customEndDateMillis.value = endMillis
+        _transactionDateRange.value = DateFilterRange.CUSTOM
+    }
+
+    fun setAmountRange(min: Long?, max: Long?) {
+        _minAmount.value = min
+        _maxAmount.value = max
+    }
+
+    fun applyAdvancedFilters(
+        type: TransactionFilterType,
+        accountId: Long?,
+        categoryId: Long?,
+        dateRange: DateFilterRange,
+        customStartMillis: Long?,
+        customEndMillis: Long?,
+        minAmount: Long?,
+        maxAmount: Long?
+    ) {
+        _transactionFilterType.value = type
+        _filterAccountId.value = accountId
+        _filterCategoryId.value = categoryId
+        _transactionDateRange.value = dateRange
+        _customStartDateMillis.value = customStartMillis
+        _customEndDateMillis.value = customEndMillis
+        _minAmount.value = minAmount
+        _maxAmount.value = maxAmount
+    }
+
+    fun clearAllFilters() {
+        _transactionFilterType.value = TransactionFilterType.ALL
+        _filterAccountId.value = null
+        _filterCategoryId.value = null
+        _transactionDateRange.value = DateFilterRange.ALL_TIME
+        _customStartDateMillis.value = null
+        _customEndDateMillis.value = null
+        _minAmount.value = null
+        _maxAmount.value = null
+    }
+
+    fun clearSearchQuery() {
+        _searchQuery.value = ""
+    }
+
+    fun resetAllFiltersAndSearch() {
+        clearSearchQuery()
+        clearAllFilters()
     }
 
     fun setSelectedPeriod(period: TimePeriod) {
@@ -524,19 +669,20 @@ class FinanceViewModel(
                 attachmentUri = null
             )
 
-            val cal = Calendar.getInstance().apply {
-                timeInMillis = payment.nextPaymentDateMillis
+            val isOneTime = payment.frequency.trim().uppercase() in listOf("ONCE", "ONE_TIME")
+            if (isOneTime) {
+                repository.updateScheduledPayment(
+                    payment.copy(isActive = false)
+                )
+            } else {
+                val nextDate = ScheduledPaymentCalculator.calculateNextDate(
+                    payment.nextPaymentDateMillis,
+                    payment.frequency
+                )
+                repository.updateScheduledPayment(
+                    payment.copy(nextPaymentDateMillis = nextDate)
+                )
             }
-            when (payment.frequency) {
-                "DAILY" -> cal.add(Calendar.DAY_OF_YEAR, 1)
-                "WEEKLY" -> cal.add(Calendar.WEEK_OF_YEAR, 1)
-                "MONTHLY" -> cal.add(Calendar.MONTH, 1)
-                "YEARLY" -> cal.add(Calendar.YEAR, 1)
-            }
-
-            repository.updateScheduledPayment(
-                payment.copy(nextPaymentDateMillis = cal.timeInMillis)
-            )
         }
     }
 
@@ -556,6 +702,103 @@ class FinanceViewModel(
     fun updateNotificationsEnabled(enabled: Boolean) {
         viewModelScope.launch {
             repository.setNotificationsEnabled(enabled)
+        }
+    }
+
+    companion object {
+        fun calculateDateBounds(
+            dateRange: DateFilterRange,
+            customStart: Long?,
+            customEnd: Long?
+        ): Pair<Long, Long> {
+            return when (dateRange) {
+                DateFilterRange.ALL_TIME -> Pair(0L, Long.MAX_VALUE)
+                DateFilterRange.TODAY -> {
+                    val cal = Calendar.getInstance()
+                    cal.set(Calendar.HOUR_OF_DAY, 0)
+                    cal.set(Calendar.MINUTE, 0)
+                    cal.set(Calendar.SECOND, 0)
+                    cal.set(Calendar.MILLISECOND, 0)
+                    val start = cal.timeInMillis
+                    cal.set(Calendar.HOUR_OF_DAY, 23)
+                    cal.set(Calendar.MINUTE, 59)
+                    cal.set(Calendar.SECOND, 59)
+                    cal.set(Calendar.MILLISECOND, 999)
+                    val end = cal.timeInMillis
+                    Pair(start, end)
+                }
+                DateFilterRange.THIS_WEEK -> {
+                    val cal = Calendar.getInstance()
+                    cal.set(Calendar.DAY_OF_WEEK, cal.firstDayOfWeek)
+                    cal.set(Calendar.HOUR_OF_DAY, 0)
+                    cal.set(Calendar.MINUTE, 0)
+                    cal.set(Calendar.SECOND, 0)
+                    cal.set(Calendar.MILLISECOND, 0)
+                    val start = cal.timeInMillis
+                    cal.add(Calendar.DAY_OF_WEEK, 6)
+                    cal.set(Calendar.HOUR_OF_DAY, 23)
+                    cal.set(Calendar.MINUTE, 59)
+                    cal.set(Calendar.SECOND, 59)
+                    cal.set(Calendar.MILLISECOND, 999)
+                    val end = cal.timeInMillis
+                    Pair(start, end)
+                }
+                DateFilterRange.THIS_MONTH -> {
+                    val cal = Calendar.getInstance()
+                    cal.set(Calendar.DAY_OF_MONTH, 1)
+                    cal.set(Calendar.HOUR_OF_DAY, 0)
+                    cal.set(Calendar.MINUTE, 0)
+                    cal.set(Calendar.SECOND, 0)
+                    cal.set(Calendar.MILLISECOND, 0)
+                    val start = cal.timeInMillis
+                    cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH))
+                    cal.set(Calendar.HOUR_OF_DAY, 23)
+                    cal.set(Calendar.MINUTE, 59)
+                    cal.set(Calendar.SECOND, 59)
+                    cal.set(Calendar.MILLISECOND, 999)
+                    val end = cal.timeInMillis
+                    Pair(start, end)
+                }
+                DateFilterRange.THIS_YEAR -> {
+                    val cal = Calendar.getInstance()
+                    cal.set(Calendar.DAY_OF_YEAR, 1)
+                    cal.set(Calendar.HOUR_OF_DAY, 0)
+                    cal.set(Calendar.MINUTE, 0)
+                    cal.set(Calendar.SECOND, 0)
+                    cal.set(Calendar.MILLISECOND, 0)
+                    val start = cal.timeInMillis
+                    cal.set(Calendar.DAY_OF_YEAR, cal.getActualMaximum(Calendar.DAY_OF_YEAR))
+                    cal.set(Calendar.HOUR_OF_DAY, 23)
+                    cal.set(Calendar.MINUTE, 59)
+                    cal.set(Calendar.SECOND, 59)
+                    cal.set(Calendar.MILLISECOND, 999)
+                    val end = cal.timeInMillis
+                    Pair(start, end)
+                }
+                DateFilterRange.CUSTOM -> {
+                    val start = customStart?.let {
+                        Calendar.getInstance().apply {
+                            timeInMillis = it
+                            set(Calendar.HOUR_OF_DAY, 0)
+                            set(Calendar.MINUTE, 0)
+                            set(Calendar.SECOND, 0)
+                            set(Calendar.MILLISECOND, 0)
+                        }.timeInMillis
+                    } ?: 0L
+
+                    val end = customEnd?.let {
+                        Calendar.getInstance().apply {
+                            timeInMillis = it
+                            set(Calendar.HOUR_OF_DAY, 23)
+                            set(Calendar.MINUTE, 59)
+                            set(Calendar.SECOND, 59)
+                            set(Calendar.MILLISECOND, 999)
+                        }.timeInMillis
+                    } ?: Long.MAX_VALUE
+
+                    Pair(start, end)
+                }
+            }
         }
     }
 }
