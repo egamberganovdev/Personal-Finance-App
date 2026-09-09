@@ -211,9 +211,57 @@
     <string name="contact_support_text">Savol va takliflar uchun:\nsupport@finflow.app</string>
     <string name="terms_text">FinFlow Foydalanish shartlari:\n\n1. Barcha ma\'lumotlar faqat qurilmangizda saqlanadi va uchinchi shaxslarga uzatilmaydi.\n2. Moliyaviy ma\'lumotlaringiz to\'liq sizning nazoratingizda.</string>
 
-    <!-- Onboarding -->
+    <!-- Onboarding Wizard -->
     <string name="onboarding_welcome_title">FinFlow ga Xush Kelibsiz</string>
     <string name="onboarding_welcome_subtitle">Maxfiy · Qulay · Oflayn</string>
+    <string name="onboarding_welcome_desc">Mablag\'ingizni nazorat qiling, xarajatlaringizni kuzating va qulay oflayn tizim orqali moliyaviy barqarorlikka erishing.</string>
+    <string name="onboarding_step_progress">%2$d tadan %1$d-qadam</string>
+    <string name="btn_continue">Davom etish</string>
+    <string name="btn_back">Orqaga</string>
+    <string name="btn_start_now">Boshlash</string>
+    <string name="onboarding_feature_accounts_title">Hisoblar va Naqd Pul Boshqaruvi</string>
+    <string name="onboarding_feature_accounts_desc">Xarajat va daromadlarni toifalar hamda bir nechta hisoblar bilan qayd eting.</string>
+    <string name="onboarding_feature_scheduled_title">Rejali To\'lovlar Taqvim</string>
+    <string name="onboarding_feature_scheduled_desc">Muntazam to\'lovlar va to\'lov muddatlaridan doim xabardor bo\'ling.</string>
+    <string name="onboarding_feature_privacy_title">100% Oflayn va Maxfiy</string>
+    <string name="onboarding_feature_privacy_desc">Barcha ma\'lumotlar faqat qurilmangizda xavfsiz saqlanadi. Serverlar va kuzatuvlarsiz.</string>
+
+    <string name="onboarding_language_title">Tilni tanlang</string>
+    <string name="onboarding_language_desc">FinFlow interfeysi uchun qulay tilni tanlang.</string>
+    <string name="lang_en">English</string>
+    <string name="lang_uz">O\'zbekcha</string>
+    <string name="lang_ru">Русский</string>
+
+    <string name="onboarding_currency_title">Asosiy valyutani tanlang</string>
+    <string name="onboarding_currency_desc">Ushbu valyuta hisoblaringiz va umumiy hisob-kitoblar uchun asosiy bo\'ladi.</string>
+    <string name="curr_uzs_name">O\'zbek so\'mi</string>
+    <string name="curr_usd_name">AQSH dollari</string>
+    <string name="curr_eur_name">Yevro</string>
+    <string name="curr_rub_name">Rossiya rubli</string>
+    <string name="curr_gbp_name">Britaniya funti</string>
+    <string name="curr_kzt_name">Qozog\'iston tengesi</string>
+
+    <string name="onboarding_theme_title">Mavzuni tanlang</string>
+    <string name="onboarding_theme_desc">FinFlow ko\'rinishini o\'zingizga moslang.</string>
+    <string name="onboarding_theme_system_desc">Qurilmangiz tizim rejimiga moslashadi</string>
+    <string name="onboarding_theme_light_desc">Yorqin, qulay va yorug\' ko\'rinish</string>
+    <string name="onboarding_theme_dark_desc">Ko\'zni toliqtirmaydigan qorong\'i ko\'rinish</string>
+
+    <string name="onboarding_account_title">Birinchi hisobingizni yarating</string>
+    <string name="onboarding_account_desc">Hisob-kitobni boshlash uchun dastlabki hamyon yoki kartangizni kiriting.</string>
+    <string name="onboarding_default_account_name">Hamyon</string>
+    <string name="error_initial_balance_negative">Boshlang\'ich qoldiq manfiy bo\'lishi mumkin emas</string>
+
+    <string name="onboarding_ready_title">Hammasi tayyor!</string>
+    <string name="onboarding_ready_desc">FinFlow sozlamalari muvaffaqiyatli yakunlandi. Moliyaviy boshqaruvni boshlashingiz mumkin.</string>
+    <string name="onboarding_summary_title">Sozlamalar xulosasi</string>
+    <string name="onboarding_summary_language">Til</string>
+    <string name="onboarding_summary_currency">Asosiy valyuta</string>
+    <string name="onboarding_summary_theme">Mavzu</string>
+    <string name="onboarding_summary_account">Birinchi hisob</string>
+    <string name="onboarding_summary_balance">Boshlang\'ich qoldiq</string>
+
+    <!-- Legacy Onboarding Compatibility -->
     <string name="onboarding_create_account_title">Birinchi Hisobingizni Yarating</string>
     <string name="onboarding_create_account_subtitle">Kassadagi pulingizni hisoblash uchun hisob oching</string>
     <string name="onboarding_get_started">Boshlash 🚀</string>

@@ -171,6 +171,10 @@ fun FinanceAppRoot(viewModel: FinanceViewModel) {
 
     if (!isOnboardingCompleted) {
         OnboardingScreen(
+            currentLanguage = appSettings?.languageCode ?: "en",
+            currentTheme = appSettings?.themeMode ?: "SYSTEM",
+            onLanguageChange = { viewModel.updateLanguage(it) },
+            onThemeChange = { viewModel.updateThemeMode(it) },
             onComplete = { accountName, accountType, currency, initialBalance ->
                 viewModel.completeOnboarding(accountName, accountType, currency, initialBalance)
             }

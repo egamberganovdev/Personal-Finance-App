@@ -164,7 +164,6 @@
     <string name="due_tomorrow">Due tomorrow</string>
     <string name="due_in_days">Due in %d days</string>
     <string name="paid_action">Paid</string>
-    <string name="filter_all">All</string>
     <string name="filter_overdue">Overdue</string>
     <string name="filter_due_today">Due Today</string>
     <string name="filter_upcoming">Upcoming</string>
@@ -233,9 +232,57 @@
     <string name="contact_support_text">For questions, feedback, or support regarding FinFlow, contact us at:\nsupport@finflow.app</string>
     <string name="terms_text">FinFlow Terms of Use:\n\n1. All financial calculations and records are stored strictly on your local device.\n2. You maintain full ownership and control over your financial data.\n3. The app is provided for personal budgeting and tracking purposes.</string>
 
-    <!-- Onboarding -->
+    <!-- Onboarding Wizard -->
     <string name="onboarding_welcome_title">Welcome to FinFlow</string>
     <string name="onboarding_welcome_subtitle">Local-first · Offline · Private</string>
+    <string name="onboarding_welcome_desc">Take control of your money, track your spending, and build better financial habits with an intuitive offline command center.</string>
+    <string name="onboarding_step_progress">Step %1$d of %2$d</string>
+    <string name="btn_continue">Continue</string>
+    <string name="btn_back">Back</string>
+    <string name="btn_start_now">Start Now</string>
+    <string name="onboarding_feature_accounts_title">Cash &amp; Account Management</string>
+    <string name="onboarding_feature_accounts_desc">Record expenses &amp; incomes with custom categories and multi-account tracking.</string>
+    <string name="onboarding_feature_scheduled_title">Upcoming Scheduled Payments</string>
+    <string name="onboarding_feature_scheduled_desc">Stay ahead of bills and recurring payments with overdue warnings.</string>
+    <string name="onboarding_feature_privacy_title">100% Offline &amp; Private</string>
+    <string name="onboarding_feature_privacy_desc">All data stored strictly on your local device. No servers, no tracking.</string>
+
+    <string name="onboarding_language_title">Choose your language</string>
+    <string name="onboarding_language_desc">Select your preferred interface language for FinFlow.</string>
+    <string name="lang_en">English</string>
+    <string name="lang_uz">O\'zbekcha</string>
+    <string name="lang_ru">Русский</string>
+
+    <string name="onboarding_currency_title">Choose your main currency</string>
+    <string name="onboarding_currency_desc">This currency will be used as the default for your accounts and statistics.</string>
+    <string name="curr_uzs_name">Uzbekistani Som</string>
+    <string name="curr_usd_name">US Dollar</string>
+    <string name="curr_eur_name">Euro</string>
+    <string name="curr_rub_name">Russian Ruble</string>
+    <string name="curr_gbp_name">British Pound</string>
+    <string name="curr_kzt_name">Kazakhstani Tenge</string>
+
+    <string name="onboarding_theme_title">Choose appearance</string>
+    <string name="onboarding_theme_desc">Customize how FinFlow looks on your device.</string>
+    <string name="onboarding_theme_system_desc">Follows your device system theme</string>
+    <string name="onboarding_theme_light_desc">Clean and bright high-contrast interface</string>
+    <string name="onboarding_theme_dark_desc">Sleek dark interface that saves battery</string>
+
+    <string name="onboarding_account_title">Create your first account</string>
+    <string name="onboarding_account_desc">Set up your initial wallet or bank account to start tracking.</string>
+    <string name="onboarding_default_account_name">My Wallet</string>
+    <string name="error_initial_balance_negative">Initial balance cannot be negative</string>
+
+    <string name="onboarding_ready_title">You\'re all set!</string>
+    <string name="onboarding_ready_desc">Your FinFlow setup is complete. You are ready to take full control of your personal finances.</string>
+    <string name="onboarding_summary_title">Setup Summary</string>
+    <string name="onboarding_summary_language">Language</string>
+    <string name="onboarding_summary_currency">Default Currency</string>
+    <string name="onboarding_summary_theme">Appearance</string>
+    <string name="onboarding_summary_account">First Account</string>
+    <string name="onboarding_summary_balance">Initial Balance</string>
+
+    <!-- Legacy Onboarding Compatibility -->
     <string name="onboarding_create_account_title">Set Up Your First Account</string>
     <string name="onboarding_create_account_subtitle">Create a Cash account to begin tracking</string>
     <string name="onboarding_get_started">Get Started 🚀</string>

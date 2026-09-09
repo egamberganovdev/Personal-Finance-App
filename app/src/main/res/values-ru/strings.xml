@@ -211,9 +211,57 @@
     <string name="contact_support_text">По всем вопросам пишите на:\nsupport@finflow.app</string>
     <string name="terms_text">FinFlow Условия использования:\n\n1. Все данные хранятся локально на вашем телефоне без передачи на сторонние серверы.\n2. Вы полностью контролируете свои финансовые записи.</string>
 
-    <!-- Onboarding -->
+    <!-- Onboarding Wizard -->
     <string name="onboarding_welcome_title">Добро пожаловать в FinFlow</string>
     <string name="onboarding_welcome_subtitle">Конфиденциально · Быстро · Офлайн</string>
+    <string name="onboarding_welcome_desc">Контролируйте свои деньги, отслеживайте расходы и формируйте полезные финансовые привычки с удобным офлайн-кошельком.</string>
+    <string name="onboarding_step_progress">Шаг %1$d из %2$d</string>
+    <string name="btn_continue">Продолжить</string>
+    <string name="btn_back">Назад</string>
+    <string name="btn_start_now">Начать</string>
+    <string name="onboarding_feature_accounts_title">Управление счетами и наличными</string>
+    <string name="onboarding_feature_accounts_desc">Учитывайте расходы и доходы по категориям с поддержкой нескольких счетов.</string>
+    <string name="onboarding_feature_scheduled_title">Запланированные платежи</string>
+    <string name="onboarding_feature_scheduled_desc">Контролируйте регулярные счета и платежи с напоминанием о сроках.</string>
+    <string name="onboarding_feature_privacy_title">100% Офлайн и безопасно</string>
+    <string name="onboarding_feature_privacy_desc">Все данные хранятся исключительно на вашем устройстве. Без сторонних серверов.</string>
+
+    <string name="onboarding_language_title">Выберите язык</string>
+    <string name="onboarding_language_desc">Выберите удобный для вас язык интерфейса FinFlow.</string>
+    <string name="lang_en">English</string>
+    <string name="lang_uz">O\'zbekcha</string>
+    <string name="lang_ru">Русский</string>
+
+    <string name="onboarding_currency_title">Выберите основную валюту</string>
+    <string name="onboarding_currency_desc">Эта валюта будет использоваться по умолчанию для счетов и общей аналитики.</string>
+    <string name="curr_uzs_name">Узбекский сум</string>
+    <string name="curr_usd_name">Доллар США</string>
+    <string name="curr_eur_name">Евро</string>
+    <string name="curr_rub_name">Российский рубль</string>
+    <string name="curr_gbp_name">Британский фунт</string>
+    <string name="curr_kzt_name">Казахстанский тенге</string>
+
+    <string name="onboarding_theme_title">Выберите тему оформления</string>
+    <string name="onboarding_theme_desc">Настройте внешний вид FinFlow на вашем устройстве.</string>
+    <string name="onboarding_theme_system_desc">Следует системным настройкам устройства</string>
+    <string name="onboarding_theme_light_desc">Светлый, контрастный и ясный интерфейс</string>
+    <string name="onboarding_theme_dark_desc">Элегантная темная тема для комфорта глаз</string>
+
+    <string name="onboarding_account_title">Создайте ваш первый счет</string>
+    <string name="onboarding_account_desc">Настройте кошелек или банковский счет для начала учета.</string>
+    <string name="onboarding_default_account_name">Кошелек</string>
+    <string name="error_initial_balance_negative">Начальный баланс не может быть отрицательным</string>
+
+    <string name="onboarding_ready_title">Всё готово!</string>
+    <string name="onboarding_ready_desc">Настройка FinFlow успешно завершена. Вы готовы к полному контролю своих личных финансов.</string>
+    <string name="onboarding_summary_title">Итоги настройки</string>
+    <string name="onboarding_summary_language">Язык</string>
+    <string name="onboarding_summary_currency">Основная валюта</string>
+    <string name="onboarding_summary_theme">Оформление</string>
+    <string name="onboarding_summary_account">Первый счет</string>
+    <string name="onboarding_summary_balance">Начальный баланс</string>
+
+    <!-- Legacy Onboarding Compatibility -->
     <string name="onboarding_create_account_title">Настройка первого счета</string>
     <string name="onboarding_create_account_subtitle">Создайте счет для наличных средств</string>
     <string name="onboarding_get_started">Начать 🚀</string>
